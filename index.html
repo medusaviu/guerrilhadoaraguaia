@@ -1,110 +1,510 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mapa Interativo — Guerrilha do Araguaia</title>
-  <meta name="description" content="Landing explicativa do web mapa da Guerrilha do Araguaia, produto educacional de mestrado profissional." />
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      line-height: 1.6;
-    }
-    header, section {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-    header {
-      background: #111827;
-      position: sticky;
-      top: 0;
-      border-bottom: 1px solid #1f2937;
-    }
-    nav a {
-      margin-right: 1rem;
-      color: #22d3ee;
-      text-decoration: none;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    h1, h2 {
-      color: #22d3ee;
-    }
-    .map-embed {
-      margin: 1rem 0;
-      border: 1px solid #1f2937;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: 0;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #94a3b8;
-      border-top: 1px solid #1f2937;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="#sobre">Sobre</a>
-      <a href="#pesquisa">Pesquisa</a>
-      <a href="#guerrilha">Guerrilha</a>
-      <a href="#autoria">Autoria</a>
-    </nav>
-  </header>
+import React, { useState, useEffect } from "react";
+import { MapPin, Calendar, Users, Book, ChevronDown, Play, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-  <section>
-    <h1>Mapa Interativo da Guerrilha do Araguaia</h1>
-    <p>Este site apresenta o web mapa desenvolvido como produto educacional do <strong>Mestrado Profissional em Ensino de História</strong>. O objetivo é articular informações históricas, memórias locais e dados geográficos sobre os acontecimentos da Guerrilha do Araguaia.</p>
-    <div class="map-embed">
-      <iframe src="mapa/index.html" title="Mapa Interativo da Guerrilha do Araguaia"></iframe>
+export default function GuerrilhaAraguaia() {
+  const [activeTimelineItem, setActiveTimelineItem] = useState(null);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+
+  useEffect(() => {
+    // Animação de entrada suave
+    const sections = document.querySelectorAll('.fade-in-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  const timelineEvents = [
+    {
+      year: "1972",
+      title: "Início da Guerrilha",
+      description: "Militantes do PCdoB iniciam atividades na região do Bico do Papagaio",
+      type: "inicio"
+    },
+    {
+      year: "1973",
+      title: "Primeiros Confrontos",
+      description: "Forças Armadas descobrem a presença guerrilheira e iniciam operações",
+      type: "conflito"
+    },
+    {
+      year: "1974",
+      title: "Operação Marajoara",
+      description: "Intensificação das operações militares contra a guerrilha",
+      type: "operacao"
+    },
+    {
+      year: "1975",
+      title: "Fim da Guerrilha",
+      description: "Últimos combatentes são eliminados, encerrando o movimento",
+      type: "fim"
+    }
+  ];
+
+  const guerrilheiros = [
+    { nome: "Osvaldo Orlando da Costa", codinome: "Osvaldão", funcao: "Comandante Militar" },
+    { nome: "João Amazonas", codinome: "João", funcao: "Líder Político" },
+    { nome: "Maurício Grabois", codinome: "Mário", funcao: "Comandante Político" },
+    { nome: "Maria Lúcia Petit", codinome: "Sônia", funcao: "Enfermeira e Guerrilheira" }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-green-50 to-amber-100">
+      {/* Header */}
+      <header className="bg-green-900/95 backdrop-blur-sm text-white sticky top-0 z-50 border-b border-green-800">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <MapPin className="w-8 h-8 text-amber-400" />
+              <div>
+                <h1 className="text-xl font-bold">Guerrilha do Araguaia</h1>
+                <p className="text-green-200 text-sm">Memória e Resistência - 1972-1975</p>
+              </div>
+            </div>
+            <nav className="hidden md:flex items-center gap-6">
+              <a href="#contexto" className="hover:text-amber-300 transition-colors">Contexto</a>
+              <a href="#mapa" className="hover:text-amber-300 transition-colors">Mapa Interativo</a>
+              <a href="#timeline" className="hover:text-amber-300 transition-colors">Cronologia</a>
+              <a href="#memoria" className="hover:text-amber-300 transition-colors">Memória</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative py-24 px-6">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/20 to-amber-900/20" />
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <div className="fade-in-section">
+            <Badge className="mb-6 bg-green-800 text-green-100 px-4 py-2 text-sm">
+              <Calendar className="w-4 h-4 mr-2" />
+              1972 - 1975
+            </Badge>
+            <h1 className="text-5xl md:text-7xl font-bold text-green-900 mb-8 leading-tight">
+              Guerrilha do
+              <span className="text-amber-700 block">Araguaia</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-green-800 mb-12 max-w-4xl mx-auto leading-relaxed">
+              Um movimento de resistência armada que marcou a história do Brasil durante a ditadura militar, 
+              na região amazônica do Bico do Papagaio.
+            </p>
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="bg-green-800 hover:bg-green-900 text-white px-8 py-4 rounded-full"
+                onClick={() => document.getElementById('mapa').scrollIntoView({ behavior: 'smooth' })}
+              >
+                <MapPin className="w-5 h-5 mr-2" />
+                Explorar Mapa Interativo
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-green-800 text-green-800 hover:bg-green-800 hover:text-white px-8 py-4 rounded-full"
+                onClick={() => document.getElementById('contexto').scrollIntoView({ behavior: 'smooth' })}
+              >
+                <Book className="w-5 h-5 mr-2" />
+                Conhecer a História
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronDown className="w-8 h-8 text-green-700" />
+        </div>
+      </section>
+
+      {/* Contexto Histórico */}
+      <section id="contexto" className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="fade-in-section">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-green-900 mb-6">Contexto Histórico</h2>
+              <p className="text-xl text-green-700 max-w-3xl mx-auto">
+                Compreenda o cenário político e social que levou ao surgimento da guerrilha
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <Card className="border-l-4 border-l-amber-500 bg-amber-50">
+                  <CardHeader>
+                    <CardTitle className="text-green-900">Ditadura Militar (1964-1985)</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-green-700">
+                      Período de repressão política, censura e violação dos direitos humanos no Brasil, 
+                      que motivou diversos grupos de resistência armada.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-green-500 bg-green-50">
+                  <CardHeader>
+                    <CardTitle className="text-green-900">Partido Comunista do Brasil (PCdoB)</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-green-700">
+                      Organização política que planejou e executou a estratégia de guerrilha rural 
+                      inspirada nas experiências chinesa e vietnamita.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-red-500 bg-red-50">
+                  <CardHeader>
+                    <CardTitle className="text-green-900">Região do Araguaia</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-green-700">
+                      Área de fronteira entre Pará, Tocantins e Maranhão, escolhida pela 
+                      geografia favorável e população rural explorada.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="relative">
+                <div className="bg-gradient-to-br from-green-100 to-amber-100 p-8 rounded-2xl">
+                  <h3 className="text-2xl font-bold text-green-900 mb-6">Dados do Conflito</h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-700">Duração</span>
+                      <Badge className="bg-green-800">3 anos</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-700">Guerrilheiros</span>
+                      <Badge className="bg-amber-600">~70 pessoas</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-700">Área de Operação</span>
+                      <Badge className="bg-red-600">6.000 km²</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-700">Estados</span>
+                      <Badge className="bg-blue-600">PA, TO, MA</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Área do Mapa Interativo */}
+      <section id="mapa" className="py-20 px-6 bg-gradient-to-br from-green-50 to-amber-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="fade-in-section">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-green-900 mb-6">Mapa Interativo da Guerrilha</h2>
+              <p className="text-xl text-green-700 max-w-3xl mx-auto">
+                Explore os locais históricos, rotas e eventos da Guerrilha do Araguaia através de nosso mapa interativo
+              </p>
+            </div>
+
+            {/* Container para o Web Mapa do usuário */}
+            <Card className="bg-white border-2 border-green-200 shadow-2xl rounded-2xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-green-800 to-green-700 text-white">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-2xl flex items-center gap-3">
+                    <MapPin className="w-6 h-6" />
+                    Região do Bico do Papagaio
+                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-green-200 text-sm">Mapa Carregado</span>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="p-0">
+                {/* 
+                  ÁREA DEDICADA PARA SEU WEB MAPA 
+                  Substitua este placeholder pelo seu código do mapa
+                */}
+                <div 
+                  id="web-mapa-container" 
+                  className="w-full h-[600px] bg-gradient-to-br from-green-100 to-amber-100 flex items-center justify-center relative overflow-hidden"
+                  style={{ minHeight: '600px' }}
+                >
+                  {/* Placeholder - Remova este conteúdo e adicione seu mapa aqui */}
+                  <div className="text-center space-y-6">
+                    <div className="w-20 h-20 bg-green-200 rounded-full flex items-center justify-center mx-auto">
+                      <MapPin className="w-10 h-10 text-green-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-green-800 mb-2">Área do Seu Web Mapa</h3>
+                      <p className="text-green-600 max-w-md">
+                        Esta área está reservada para a integração do seu mapa interativo da Guerrilha do Araguaia.
+                        Substitua este placeholder pelo código do seu web mapa.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      <Badge className="bg-green-800">Locais Históricos</Badge>
+                      <Badge className="bg-amber-600">Rotas de Deslocamento</Badge>
+                      <Badge className="bg-red-600">Pontos de Conflito</Badge>
+                      <Badge className="bg-blue-600">Bases Militares</Badge>
+                    </div>
+                  </div>
+
+                  {/* Elementos decorativos de fundo */}
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <div className="w-32 h-32 border-2 border-green-300 rounded-full"></div>
+                  </div>
+                  <div className="absolute bottom-4 left-4 opacity-20">
+                    <div className="w-24 h-24 border-2 border-amber-300 rounded-full"></div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Instruções para integração */}
+            <Card className="mt-8 border-amber-200 bg-amber-50">
+              <CardHeader>
+                <CardTitle className="text-amber-800 flex items-center gap-2">
+                  <Play className="w-5 h-5" />
+                  Como Integrar Seu Mapa
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold text-amber-800 mb-2">Passos para Integração:</h4>
+                    <ol className="text-amber-700 space-y-1 list-decimal list-inside">
+                      <li>Localize a div com id "web-mapa-container"</li>
+                      <li>Remova o conteúdo placeholder</li>
+                      <li>Adicione o código do seu web mapa</li>
+                      <li>Configure a altura mínima conforme necessário</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-amber-800 mb-2">Especificações Técnicas:</h4>
+                    <ul className="text-amber-700 space-y-1">
+                      <li>• Container responsivo</li>
+                      <li>• Altura padrão: 600px</li>
+                      <li>• Largura: 100% do container</li>
+                      <li>• Suporte a mapas Leaflet, MapBox, etc.</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section id="timeline" className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="fade-in-section">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-green-900 mb-6">Cronologia dos Eventos</h2>
+              <p className="text-xl text-green-700">
+                Acompanhe os principais marcos da Guerrilha do Araguaia
+              </p>
+            </div>
+
+            <div className="relative">
+              {/* Linha vertical */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-green-500 to-amber-500 rounded-full"></div>
+              
+              <div className="space-y-12">
+                {timelineEvents.map((event, index) => (
+                  <div 
+                    key={index}
+                    className={`flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                  >
+                    <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
+                      <Card 
+                        className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
+                          activeTimelineItem === index ? 'ring-2 ring-green-500 shadow-xl' : ''
+                        } ${
+                          event.type === 'inicio' ? 'border-green-500 bg-green-50' :
+                          event.type === 'conflito' ? 'border-red-500 bg-red-50' :
+                          event.type === 'operacao' ? 'border-amber-500 bg-amber-50' :
+                          'border-gray-500 bg-gray-50'
+                        }`}
+                        onClick={() => setActiveTimelineItem(activeTimelineItem === index ? null : index)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-center gap-3">
+                            <Badge className={`${
+                              event.type === 'inicio' ? 'bg-green-500' :
+                              event.type === 'conflito' ? 'bg-red-500' :
+                              event.type === 'operacao' ? 'bg-amber-500' :
+                              'bg-gray-500'
+                            } text-white font-bold`}>
+                              {event.year}
+                            </Badge>
+                            <CardTitle className="text-green-900">{event.title}</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-green-700">{event.description}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
+                    {/* Ponto central */}
+                    <div className="relative flex-shrink-0">
+                      <div className={`w-6 h-6 rounded-full border-4 border-white shadow-lg ${
+                        event.type === 'inicio' ? 'bg-green-500' :
+                        event.type === 'conflito' ? 'bg-red-500' :
+                        event.type === 'operacao' ? 'bg-amber-500' :
+                        'bg-gray-500'
+                      }`}></div>
+                    </div>
+                    
+                    <div className="flex-1"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Memória e Personagens */}
+      <section id="memoria" className="py-20 px-6 bg-gradient-to-br from-amber-50 to-green-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="fade-in-section">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-green-900 mb-6">Memória e Resistência</h2>
+              <p className="text-xl text-green-700 max-w-3xl mx-auto">
+                Conhecer os protagonistas da história e preservar a memória das vítimas da ditadura
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {guerrilheiros.map((pessoa, index) => (
+                <Card key={index} className="bg-white border-2 border-green-100 hover:border-green-300 transition-all duration-300 hover:shadow-lg">
+                  <CardHeader className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Users className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-green-900 text-lg">{pessoa.nome}</CardTitle>
+                    <p className="text-green-600 text-sm">"{pessoa.codinome}"</p>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <Badge className="bg-amber-100 text-amber-800">{pessoa.funcao}</Badge>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="bg-gradient-to-r from-green-800 to-green-700 text-white">
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl mb-4">Preservação da Memória</CardTitle>
+                <p className="text-green-200">
+                  A Guerrilha do Araguaia representa um capítulo fundamental da resistência à ditadura militar no Brasil. 
+                  Através do estudo e mapeamento destes eventos, honramos a memória daqueles que lutaram pela democracia.
+                </p>
+              </CardHeader>
+              <CardContent className="text-center pt-6">
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div>
+                    <h4 className="font-bold mb-2">Mortos e Desaparecidos</h4>
+                    <p className="text-green-200">Mais de 60 pessoas</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold mb-2">Sobreviventes</h4>
+                    <p className="text-green-200">Poucos conseguiram escapar</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold mb-2">Legado</h4>
+                    <p className="text-green-200">Luta pela justiça e memória</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-green-900 text-white py-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <MapPin className="w-6 h-6 text-amber-400" />
+                <h3 className="text-xl font-bold">Guerrilha do Araguaia</h3>
+              </div>
+              <p className="text-green-200 mb-4">
+                Projeto educativo dedicado à preservação da memória histórica 
+                da resistência armada no período da ditadura militar brasileira.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-bold mb-4">Recursos Educacionais</h4>
+              <ul className="space-y-2 text-green-200">
+                <li className="flex items-center gap-2">
+                  <Book className="w-4 h-4" />
+                  Documentos Históricos
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Mapeamento Geográfico
+                </li>
+                <li className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  Biografias e Testemunhos
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-bold mb-4">Informações</h4>
+              <p className="text-green-200 text-sm mb-4">
+                Este projeto visa contribuir para o conhecimento histórico e 
+                educação sobre direitos humanos no Brasil.
+              </p>
+              <p className="text-green-300 text-xs">
+                © 2024 - Projeto Educacional Guerrilha do Araguaia
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <style jsx>{`
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .animate-fade-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .hover\\:shadow-2xl:hover {
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+      `}</style>
     </div>
-    <p>Caso prefira, abra o mapa em nova aba: <a href="mapa/index.html" target="_blank">clique aqui</a>.</p>
-  </section>
-
-  <section id="sobre">
-    <h2>Sobre o mapa</h2>
-    <p>O mapa foi desenvolvido no QGIS e exportado com o plugin qgis2web. Ele apresenta:</p>
-    <ul>
-      <li>Localização geográfica de eventos relevantes;</li>
-      <li>Textos explicativos, imagens e vídeos curtos;</li>
-      <li>Pontos de memória ligados à Guerrilha.</li>
-    </ul>
-  </section>
-
-  <section id="pesquisa">
-    <h2>A pesquisa</h2>
-    <p>Este produto faz parte de uma pesquisa de mestrado, com foco em metodologias inovadoras para o ensino de História e valorização da memória local.</p>
-  </section>
-
-  <section id="guerrilha">
-    <h2>O que foi a Guerrilha do Araguaia</h2>
-    <p>A Guerrilha do Araguaia foi um movimento de resistência organizado pelo Partido Comunista do Brasil (PCdoB) entre o final dos anos 1960 e meados de 1970, na região do Bico do Papagaio. O confronto com as Forças Armadas resultou em mortes e desaparecimentos, permanecendo como uma das páginas mais marcantes da história recente do Brasil.</p>
-  </section>
-
-  <section id="autoria">
-    <h2>Autoria</h2>
-    <p><strong>Jenifer Silva</strong> — desenvolvimento do mapa, curadoria e publicação.</p>
-    <p>Orientação: [Nome do orientador(a)] — [Instituição].</p>
-    <p>Instituição: [Programa de Pós-Graduação / Universidade].</p>
-    <p>Contato: <a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></p>
-  </section>
-
-  <footer>
-    © <span id="ano"></span> — Projeto educacional sem fins lucrativos.  
-    <script>document.getElementById('ano').textContent = new Date().getFullYear();</script>
-  </footer>
-</body>
-</html>
+  );
+}
