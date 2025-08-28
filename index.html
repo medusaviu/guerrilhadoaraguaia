@@ -1,80 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa Interativo da Guerrilha do Araguaia</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background: #800000;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    main {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      margin: 20px 0;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 0.9em;
-      background: #eee;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Histórico - Guerrilha do Araguaia</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #fdf6e3;
+            color: #333;
+        }
+
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #a52a2a;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #8b0000;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #a52a2a;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Pequena animação para seções aparecerem suavemente */
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Mapa Interativo da Guerrilha do Araguaia</h1>
-    <p>Produto educacional desenvolvido para pesquisa de Mestrado</p>
-  </header>
+    <header>
+        <h1>Mapa Histórico - Guerrilha do Araguaia</h1>
+        <p>Baseado na pesquisa de Jorge Kitchell Pinheiro Lima (Mestrado Profissional no Ensino de História - ProfHistória)</p>
+    </header>
 
-  <main>
-    <h2>Sobre o projeto</h2>
-    <p>
-      Este mapa interativo é resultado de uma pesquisa de Mestrado Profissional em Ensino de História. 
-      Seu objetivo é reunir informações históricas, geográficas e memoriais sobre a 
-      <strong>Guerrilha do Araguaia</strong>, aproximando alunos, professores e comunidade local de uma parte 
-      significativa da história brasileira.
-    </p>
+    <nav>
+        <a href="#sobre">Sobre o Mapa</a>
+        <a href="#contexto">Contexto Histórico</a>
+        <a href="#autoria">Autoria e Créditos</a>
+        <a href="#como-usar">Como Usar</a>
+    </nav>
 
-    <h2>A Guerrilha do Araguaia</h2>
-    <p>
-      A Guerrilha do Araguaia foi um movimento de resistência à ditadura militar no Brasil (1972–1974),
-      organizado pelo Partido Comunista do Brasil (PCdoB). 
-      O conflito ocorreu na região do Araguaia, entre Pará, Tocantins e Maranhão, e foi marcado pela forte repressão
-      do Exército Brasileiro, resultando em centenas de mortos e desaparecidos políticos.
-    </p>
+    <section id="sobre">
+        <h2>Sobre o Mapa</h2>
+        <p>Este mapa é resultado da pesquisa de Jorge Kitchell Pinheiro Lima, desenvolvida no Mestrado Profissional no Ensino de História (ProfHistória). Ele busca apresentar informações detalhadas sobre a Guerrilha do Araguaia de forma visual e acessível.</p>
+    </section>
 
-    <h2>Explore o mapa</h2>
-    <iframe src="mapa/index.html"></iframe>
-    <p style="text-align:center">
-      <a href="mapa/index.html" target="_blank">Clique aqui para abrir o mapa em tela cheia</a>
-    </p>
-  </main>
+    <section id="contexto">
+        <h2>Contexto Histórico</h2>
+        <p>A Guerrilha do Araguaia foi um conflito armado no período da ditadura militar brasileira. Este mapa contextualiza os locais, eventos e trajetórias da guerrilha, proporcionando compreensão histórica e educativa sobre o tema.</p>
+    </section>
 
-  <footer>
-    <p>Autoria: Jenifer Silva | Desenvolvido com QGIS + qgis2web</p>
-  </footer>
+    <section id="autoria">
+        <h2>Autoria e Créditos</h2>
+        <p>Mapa desenvolvido e site criado por: [Seu Nome].</p>
+        <p>Pesquisa original por: Jorge Kitchell Pinheiro Lima.</p>
+    </section>
+
+    <section id="como-usar">
+        <h2>Como Usar</h2>
+        <p>Navegue pelo mapa interativo, explore os pontos de interesse e utilize as ferramentas de zoom e camadas para compreender melhor o contexto histórico. Cada ponto possui informações detalhadas sobre eventos e pessoas envolvidas.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 [Seu Nome] - Todos os direitos reservados</p>
+    </footer>
 </body>
 </html>
