@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guerrilha do Araguaia - Memória Histórica</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         :root {
             --color-dark: #0f172a;
@@ -13,6 +14,9 @@
             --color-accent-light: #b91c1c;
             --color-secondary: #d97706;
             --color-text: #e5e7eb;
+            --color-muted: #94a3b8;
+            --color-card: #1a2438;
+            --color-border: #334155;
         }
         
         * {
@@ -131,6 +135,20 @@
             font-size: 1.5rem;
             margin-bottom: 30px;
             max-width: 550px;
+            color: var(--color-muted);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            background: var(--color-card);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
         
         .cta-button {
@@ -144,6 +162,7 @@
             transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 20px;
         }
         
         .cta-button:hover {
@@ -169,7 +188,6 @@
             height: 100%;
         }
         
-        /* Criando uma representação estilizada do mapa da região com elementos da guerrilha */
         .map-outline {
             position: absolute;
             width: 100%;
@@ -207,6 +225,231 @@
             opacity: 0.3;
         }
         
+        /* Seções de conteúdo */
+        section {
+            padding: 100px 0;
+        }
+        
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--color-accent);
+            position: relative;
+            display: inline-block;
+        }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent);
+        }
+        
+        .lead {
+            font-size: 1.2rem;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+        
+        /* Grid e Cards */
+        .grid {
+            display: grid;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .card {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h3 {
+            color: var(--color-accent-light);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .kicker {
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .list {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        .list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .list li::before {
+            content: "•";
+            color: var(--color-accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+        
+        .callout {
+            border-left: 4px solid var(--color-accent);
+            padding: 15px 20px;
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 8px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        
+        /* Mapa Embed */
+        .map-container {
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--color-border);
+        }
+        
+        .map-embed {
+            aspect-ratio: 16/9;
+            width: 100%;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* Tabela de créditos */
+        .credits dl {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 12px;
+        }
+        
+        .credits dt {
+            color: var(--color-muted);
+            font-weight: 500;
+        }
+        
+        .credits dd {
+            margin: 0;
+        }
+        
+        /* Logos */
+        .logos {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .logo-box {
+            width: 140px;
+            height: 60px;
+            border: 1px dashed var(--color-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-muted);
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .logo-box:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 50px 0;
+            text-align: center;
+            color: var(--color-muted);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--color-accent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 40px;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 40px;
+        }
+        
+        .timeline-content {
+            padding: 15px;
+            background-color: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--color-accent);
+            margin-bottom: 5px;
+        }
+        
         /* Animações */
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.2; }
@@ -235,6 +478,10 @@
                 right: -100px;
                 opacity: 0.4;
             }
+            
+            .cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
@@ -262,6 +509,58 @@
             .hero p {
                 margin: 0 auto 30px;
             }
+            
+            .cols-2, .cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                left: 0;
+                padding-right: 0;
+                padding-left: 70px;
+            }
+        }
+        
+        /* Botão de voltar ao topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: var(--color-accent-light);
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -271,11 +570,11 @@
             <nav>
                 <a href="#" class="logo">Araguaia<span>70</span></a>
                 <div class="nav-links">
-                    <a href="#">HOME</a>
-                    <a href="#">SOBRE</a>
-                    <a href="#">MEMÓRIA</a>
-                    <a href="#">MAPAS</a>
-                    <a href="#">CONTATO</a>
+                    <a href="#sobre">SOBRE</a>
+                    <a href="#pesquisa">PESQUISA</a>
+                    <a href="#guerrilha">HISTÓRIA</a>
+                    <a href="#autoria">CRÉDITOS</a>
+                    <a href="#como-usar">COMO USAR</a>
                 </div>
             </nav>
         </div>
@@ -284,9 +583,10 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
+                <div class="badge">Produto educacional • Mestrado Profissional em Ensino de História</div>
                 <h1>GUERRILHA <span class="highlight">DO ARAGUAIA</span></h1>
                 <p>Em um mar de esquecimento, faça da memória histórica um ato de resistência.</p>
-                <a href="#" class="cta-button">Explorar Mapa Interativo</a>
+                <a href="#mapa" class="cta-button">Explorar Mapa Interativo</a>
             </div>
         </div>
         
@@ -303,7 +603,309 @@
         </div>
     </section>
 
+    <section id="sobre">
+        <div class="container">
+            <h2>Sobre o web mapa</h2>
+            <p class="lead">O mapa foi produzido no <strong>QGIS</strong> com exportação via <strong>qgis2web</strong> (Leaflet/OpenLayers), garantindo navegação leve, compatibilidade com navegadores modernos e facilidade de incorporação.</p>
+            
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>O que você encontra</h3>
+                    <ul class="list">
+                        <li>Localização de eventos históricos relevantes da Guerrilha do Araguaia</li>
+                        <li>Pop-ups com textos explicativos, imagens históricas e vídeos</li>
+                        <li>Camadas temáticas: locais de conflito, acampamentos, rotas, memoriais</li>
+                        <li>Personagens históricos e suas trajetórias na região</li>
+                        <li>Informações sobre as operações militares e comunidades locais</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Critérios e cuidados</h3>
+                    <ul class="list">
+                        <li>Uso de fontes identificadas e passíveis de citação acadêmica</li>
+                        <li>Respeito às sensibilidades locais e à memória das vítimas</li>
+                        <li>Finalidade estritamente educacional e não comercial</li>
+                        <li>Representação cartográfica cuidadosa com base em pesquisas documentais</li>
+                        <li>Atualizações contínuas com base em novas descobertas históricas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mapa">
+        <div class="container">
+            <h2>Mapa Interativo</h2>
+            <p class="lead">Explore os locais e eventos significativos da Guerrilha do Araguaia através deste mapa interativo.</p>
+            
+            <div class="map-container">
+                <div class="map-embed">
+                    <!-- ESPAÇO PARA O MAPA DO QGIS2WEB -->
+                    <iframe src="SEU_LINK_DO_MAPA_AQUI.html" title="Mapa Interativo da Guerrilha do Araguaia"></iframe>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 15px; color: var(--color-muted)">
+                Dica: se preferir, abra o mapa em uma nova aba <a href="SEU_LINK_DO_MAPA_AQUI.html" target="_blank" rel="noopener">clicando aqui</a>.
+            </p>
+            
+            <div class="grid cols-2" style="margin-top: 40px;">
+                <div class="card">
+                    <span class="kicker">Acesse o mapa</span>
+                    <p>Navegue pelo mapa interativo para explorar os locais históricos relacionados à Guerrilha do Araguaia.</p>
+                </div>
+                <div class="card">
+                    <span class="kicker">Objetivo</span>
+                    <p>Promover uma experiência de aprendizagem ativa que conecte eventos históricos às paisagens, aos espaços e às memórias da região.</p>
+                    <ul class="list">
+                        <li>Pontos georreferenciados com textos, imagens e vídeos curtos.</li>
+                        <li>Camadas temáticas: cidades, locais de conflito, personagens, campanhas, memória.</li>
+                        <li>Acesso gratuito via web e uso em sala de aula.</li>
+                    </ul>
+                    <div class="callout">Aviso: as informações históricas exibidas derivam de fontes citadas na seção "Autoria & créditos".</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pesquisa">
+        <div class="container">
+            <h2>A pesquisa de mestrado</h2>
+            <p class="lead">
+                Este site apresenta o web mapa desenvolvido como recurso didático, produto do trabalho 
+                <strong>ENSINO DE HISTÓRIA E AS MEMÓRIAS DA GUERRILHA DO ARAGUAIA: PERCEPÇÕES DE ALUNOS E PROFESSORES DA ESCOLA ESTADUAL PROFESSOR LÍCIO SOLHEIRO (BREJO GRANDE DO ARAGUAIA - PA)</strong>, 
+                articulando informações históricas, registros documentais, memórias locais e dados geográficos sobre os acontecimentos relacionados à Guerrilha do Araguaia.
+            </p>
+            
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>Metodologia</h3>
+                    <ul class="list">
+                        <li>Levantamento de fontes primárias e secundárias (relatórios, livros, artigos, depoimentos)</li>
+                        <li>Pesquisa de campo e registro de memórias locais</li>
+                        <li>Georreferenciamento no QGIS e revisão cruzada com fontes históricas</li>
+                        <li>Teste pedagógico em sala de aula e oficinas com professores</li>
+                        <li>Análise qualitativa das percepções de alunos e educadores</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Como citar</h3>
+                    <p>Modelo sugerido de citação do produto educacional e do mapa:</p>
+                    <div class="callout">
+                        Silva, J. (2025). <em>Mapa Interativo da Guerrilha do Araguaia</em>. Produto educacional do Mestrado Profissional em Ensino de História, Universidade Federal do Pará. Disponível em: [URL]
+                    </div>
+                    <p>Para citações acadêmicas da pesquisa completa, consulte a dissertação:</p>
+                    <div class="callout">
+                        Silva, J. (2025). <em>Ensino de História e as memórias da Guerrilha do Araguaia: percepções de alunos e professores da Escola Estadual Professor Lício Solheiro (Brejo Grande do Araguaia - PA)</em>. Dissertação de Mestrado, Universidade Federal do Pará.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="guerrilha">
+        <div class="container">
+            <h2>Contexto histórico — Guerrilha do Araguaia</h2>
+            <p class="lead">A Guerrilha do Araguaia (1972-1974) foi um dos episódios mais significativos de resistência à ditadura militar brasileira (1964-1985), representando a maior operação guerrilheira rural na história do país.</p>
+            
+            <div class="card">
+                <h3>Origens e Antecedentes</h3>
+                <p>A guerrilha foi organizada pelo Partido Comunista do Brasil (PCdoB), que enxergava na região do Bico do Papagaio - área de fronteira entre Pará, Maranhão e Goiás (atual Tocantins) - condições favoráveis para estabelecer um foco revolucionário inspirado na Revolução Cubana.</p>
+                
+                <p>Desde o final dos anos 1960, militantes do PCdoB iniciaram a infiltração na região, disfarçados como trabalhadores rurais, com o objetivo de:</p>
+                <ul class="list">
+                    <li>Estabelecer bases de apoio entre a população local</li>
+                    <li>Conhecer o terreno e preparar estruturas de sobrevivência</li>
+                    <li>Construir uma força guerrilheira capaz de desafiar o regime militar</li>
+                </ul>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <h3>Linha do Tempo da Guerrilha</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1966-1971</div>
+                            <p>Preparação e infiltração gradual de militantes na região, estabelecimento de bases e trabalho de conscientização com a população local.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Abril de 1972</div>
+                            <p>Início dos confrontos armados. A guerrilha é descoberta pelas forças de segurança após emboscada a uma patrulha militar.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1972-1973</div>
+                            <p>Primeira e Segunda Campanhas militares. As forças armadas enfrentam dificuldades com o terreno e a resistência guerrilheira.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Outubro 1973 - 1974</div>
+                            <p>Terceira Campanha militar, com uso de tropas especiais e métodos de guerra não convencional. Cerco gradual e aniquilação da guerrilha.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">1975</div>
+                            <p>Operações de "limpeza" e desaparecimento de corpos para ocultar evidências dos crimes cometidos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid cols-2" style="margin-top: 30px;">
+                <div class="card">
+                    <h3>Estratégias e Táticas</h3>
+                    <p>Os guerrilheiros adotaram táticas de guerra irregular, aproveitando o conhecimento do terreno e o apoio de parte da população local. Suas estratégias incluíam:</p>
+                    <ul class="list">
+                        <li>Emboscadas contra patrulhas militares</li>
+                        <li>Mobilidade constante entre bases secretas na floresta</li>
+                        <li>Uso de propaganda política entre os camponeses</li>
+                        <li>Auto-suficiência através da agricultura de subsistência</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Resposta Militar</h3>
+                    <p>O Exército brasileiro mobilizou milhares de soldados em três campanhas sucessivas, utilizando:</p>
+                    <ul class="list">
+                        <li>Bombardeios aéreos e artilharia</li>
+                        <li>Operações de cerco e aniquilamento</li>
+                        <li>Tortura sistemática de prisioneiros e suspeitos</li>
+                        <li>Execuções sumárias e desaparecimentos forçados</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <h3>Legado e Memória</h3>
+                <p>A Guerrilha do Araguaia resultou na morte ou desaparecimento de pelo menos 62 guerrilheiros, além de numerosas vítimas entre a população local. Seu legado permanece como:</p>
+                <ul class="list">
+                    <li>Um marco na resistência à ditadura militar brasileira</li>
+                    <li>Um caso emblemático de violações de direitos humanos</li>
+                    <li>Um símbolo da luta pela verdade, memória e justiça</li>
+                    <li>Um tema crucial para o ensino da história recente do Brasil</li>
+                </ul>
+                <p>Somente décadas depois, com a redemocratização e a criação da Comissão Nacional da Verdade, começou-se a esclarecer os crimes cometidos durante a repressão à guerrilha, embora muitos corpos permaneçam desaparecidos e haja resistência em revelar informações por parte das Forças Armadas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="autoria">
+        <div class="container">
+            <h2>Autoria & créditos</h2>
+            <div class="grid cols-2">
+                <div class="card credits">
+                    <dl>
+                        <dt>Autoria</dt>
+                        <dd><strong>Jenifer Silva</strong> — desenvolvimento do mapa, curadoria de conteúdo e publicação.</dd>
+                        <dt>Orientação</dt>
+                        <dd>[Nome do(a) orientador(a)] — [Instituição].</dd>
+                        <dt>Instituição</dt>
+                        <dd>[Programa de Pós-Graduação / Universidade].</dd>
+                        <dt>Financiamento</dt>
+                        <dd>[Agência de fomento, se houver]</dd>
+                        <dt>Contato</dt>
+                        <dd><a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></dd>
+                    </dl>
+                </div>
+                <div class="card">
+                    <h3>Fontes & referências</h3>
+                    <ul class="list">
+                        <li>Relatório da Comissão Nacional da Verdade (CNV) — Vol. II: "Textos Temáticos" (2014)</li>
+                        <li>Dossiê Ditadura: Mortos e Desaparecidos Políticos no Brasil (1964-1985) — IEPE</li>
+                        <li>Gaspari, E. - A Ditadura Escancarada (2002)</li>
+                        <li>Morais, T. - A Guerrilha do Araguaia (2012)</li>
+                        <li>Arquivos do DOPS e CIE - disponibilizados pelo Arquivo Nacional</li>
+                        <li>Depoimentos de sobreviventes e familiares coletados pela Comissão de Familiares de Mortos e Desaparecidos Políticos</li>
+                        <li>Entrevistas e acervos locais (memoriais, arquivos municipais)</li>
+                    </ul>
+                    <div class="callout">Transparência: As localizações apresentadas no mapa foram baseadas nas fontes acima e/ou em georreferenciamento de mapas históricos quando aplicável. Em casos de divergência entre fontes, optou-se pelas informações mais consistentes com a documentação oficial e relatos de testemunhas.</div>
+                </div>
+            </div>
+            <div class="logos" aria-label="Logotipos e apoios">
+                <div class="logo-box">Sua logo aqui</div>
+                <div class="logo-box">Logo da Instituição</div>
+                <div class="logo-box">Apoio/Parceria</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="como-usar">
+        <div class="container">
+            <h2>Como usar o mapa</h2>
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>Navegação</h3>
+                    <ul class="list">
+                        <li>Clique nos pontos para abrir os pop-ups com texto, imagem e vídeo</li>
+                        <li>Ative/desative camadas temáticas no menu de camadas (ícone de camadas)</li>
+                        <li>Use o scroll do mouse para zoom in/out ou os botões + e -</li>
+                        <li>Arraste o mapa para navegar pela região</li>
+                        <li>Use a ferramenta de busca para localizar lugares específicos</li>
+                        <li>Medir distâncias com a ferramenta de medição (régua)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Sugestões pedagógicas</h3>
+                    <ul class="list">
+                        <li>Proponha uma trilha de leitura cruzando pontos e fontes históricas</li>
+                        <li>Organize debates sobre memória, verdade e justiça transicional</li>
+                        <li>Estimule a produção de relatos locais e novas camadas de informação</li>
+                        <li>Compare a representação cartográfica com fontes textuais da época</li>
+                        <li>Analise criticamente as diferentes narrativas sobre o conflito</li>
+                        <li>Relacione a guerrilha com o contexto internacional da Guerra Fria</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <h3>Para pesquisadores</h3>
+                <p>O mapa oferece camadas específicas para análise acadêmica, incluindo:</p>
+                <ul class="list">
+                    <li>Geolocalização de eventos específicos com referências documentais</li>
+                    <li>Camadas temporais que mostram a evolução do conflito</li>
+                    <li>Dados sobre deslocamentos de tropas e grupos guerrilheiros</li>
+                    <li>Informações demográficas e socioeconômicas da região na época</li>
+                </ul>
+                <div class="callout">Os dados brutos utilizados na construção do mapa estão disponíveis para fins de pesquisa mediante solicitação ao autor.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="ano"></span> Jenifer Silva | Projeto educacional sem fins lucrativos. Este site não hospeda vídeos, apenas incorpora players oficiais (YouTube/Vimeo) quando aplicável.</p>
+            <p>Todo o conteúdo é disponibilizado para fins educacionais e de pesquisa, respeitando a legislação de direitos autorais.</p>
+        </div>
+    </footer>
+
+    <div class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</div>
+
     <script>
+        // Atualiza automaticamente o ano no rodapé
+        document.getElementById('ano').textContent = new Date().getFullYear();
+        
+        // Botão de voltar ao topo
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
         // Efeito de digitação para o título
         document.addEventListener('DOMContentLoaded', function() {
             const title = document.querySelector('.hero h1');
