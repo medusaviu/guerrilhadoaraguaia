@@ -1,95 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MULTI — Acervo Cultural de Design Gráfico</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Guerrilha do Araguaia — Webmapa</title>
+    <meta name="description" content="Site para visualização do webmapa da Guerrilha do Araguaia exportado pelo QGIS2Web.">
+    <link rel="icon" href="qgis2web_2025_08_29-11_05_01_239056/resources/marker.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="topbar">
-        <button class="icon-btn" aria-label="Menu">☰</button>
-        <div class="brand">MULTI</div>
-        <div class="spacer"></div>
-        <nav class="lang">
-            <a href="#" aria-current="page">PT</a>
-            <a href="#">ES</a>
-            <a href="#">EN</a>
-        </nav>
-        <div class="actions">
-            <div class="search">
-                <input type="search" placeholder="Pesquisar" aria-label="Pesquisar">
-            </div>
-            <button class="btn ghost">Entrar</button>
-            <button class="btn">Envie suas refs</button>
+    <header class="site-header" role="banner">
+        <div class="container">
+            <h1 class="site-title">Guerrilha do Araguaia</h1>
+            <p class="site-subtitle">Webmapa interativo</p>
         </div>
     </header>
 
-    <main class="hero">
-        <div class="hero-inner">
-            <div class="logo-lockup">
-                <h1 class="logo">MULTI</h1>
-                <p class="subtitle">Acervo Cultural de Design Gráfico</p>
-            </div>
-
-            <div class="tabs" role="tablist" aria-label="Seções do site">
-                <button class="tab is-active" role="tab" aria-selected="true" aria-controls="painel-manifesto" id="tab-manifesto">Manifesto</button>
-                <button class="tab" role="tab" aria-selected="false" aria-controls="painel-acervo" id="tab-acervo">Acervo</button>
-                <button class="tab" role="tab" aria-selected="false" aria-controls="painel-faca-parte" id="tab-faca-parte">Faça Parte</button>
-                <button class="tab" role="tab" aria-selected="false" aria-controls="painel-contato" id="tab-contato">Contato</button>
-            </div>
-
-            <section class="panels">
-                <article id="painel-manifesto" class="panel is-active" role="tabpanel" aria-labelledby="tab-manifesto">
-                    <blockquote class="manifesto">
-                        Em uma determinada cultura, os sistemas de representação, interpretação, produção gráfica, códigos, simbologias e todos os outros que permeiam o universo da comunicação visual estão naturalmente ligados aos costumes, ideias e práticas característicos daquele grupo. Por isso, <strong>não existe uma imparcialidade universal</strong>, sobretudo quando se trata da visão de mundo que comunicamos em nossos trabalhos como designers.
-                    </blockquote>
-
-                    <div class="illustration"></div>
-                </article>
-
-                <article id="painel-acervo" class="panel" role="tabpanel" aria-labelledby="tab-acervo" hidden>
-                    <div class="panel-body">
-                        <h2>Acervo</h2>
-                        <p>Pesquise e explore referências do acervo.</p>
-                    </div>
-                </article>
-
-                <article id="painel-faca-parte" class="panel" role="tabpanel" aria-labelledby="tab-faca-parte" hidden>
-                    <div class="panel-body">
-                        <h2>Faça Parte</h2>
-                        <p>Contribua enviando suas referências e pesquisas.</p>
-                    </div>
-                </article>
-
-                <article id="painel-contato" class="panel" role="tabpanel" aria-labelledby="tab-contato" hidden>
-                    <div class="panel-body">
-                        <h2>Contato</h2>
-                        <p>Fale com a equipe.</p>
-                    </div>
-                </article>
-            </section>
+    <main class="site-main" id="conteudo" role="main">
+        <div class="map-container">
+            <iframe
+                class="map-frame"
+                title="Webmapa Guerrilha do Araguaia"
+                src="qgis2web_2025_08_29-11_05_01_239056/index.html"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen>
+            </iframe>
+            <noscript>
+                Ative o JavaScript para visualizar o mapa interativo.
+            </noscript>
         </div>
     </main>
 
-    <section class="map-wrap">
-        <div class="map-inner">
-            <h3>Mapa</h3>
-            <div id="webmap" class="webmap" aria-label="Mapa interativo">
-                <!-- Opção 1 (recomendada): mova a pasta exportada para ./qgis2web e use o iframe abaixo -->
-                <iframe src="qgis2web/index.html" title="Mapa qgis2web" loading="lazy"></iframe>
-                <!-- Opção 2: remova o iframe e cole aqui o HTML/CSS/JS exportados pelo qgis2web -->
-            </div>
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <small>
+                © <span id="year"></span> Guerrilha do Araguaia • Mapa gerado com QGIS2Web
+            </small>
         </div>
-    </section>
+    </footer>
 
-    <script src="script.js"></script>
-    <!-- Se usar qgis2web (Leaflet), inclua aqui os scripts/estilos exportados -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
-
-
 
