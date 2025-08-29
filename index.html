@@ -79,7 +79,9 @@
         <div class="map-inner">
             <h3>Mapa</h3>
             <div id="webmap" class="webmap" aria-label="Mapa interativo">
-                <!-- Cole aqui a saída do qgis2web (Leaflet/Mapbox) -->
+                <!-- Opção 1 (recomendada): mova a pasta exportada para ./qgis2web e use o iframe abaixo -->
+                <iframe src="qgis2web/index.html" title="Mapa qgis2web" loading="lazy"></iframe>
+                <!-- Opção 2: remova o iframe e cole aqui o HTML/CSS/JS exportados pelo qgis2web -->
             </div>
         </div>
     </section>
@@ -88,5 +90,6 @@
     <!-- Se usar qgis2web (Leaflet), inclua aqui os scripts/estilos exportados -->
 </body>
 </html>
+
 
 

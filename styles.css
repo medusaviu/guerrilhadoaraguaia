@@ -1,10 +1,17 @@
 :root {
-  --bg: #e6cf67;          /* amarelo mostarda do herói */
-  --ink: #1b2623;         /* verde-escuro quase preto */
-  --salmon: #f26845;      /* laranja/salmão para destaque */
-  --paper: #efe9dd;       /* bege claro das áreas internas */
-  --tab: #e9e3d8;         /* cinza/bege para abas */
-  --tab-stroke: #c8c1b3;
+  /* Paleta solicitada */
+  --paper: #f5e6d3;       /* bege claro */
+  --verde: #1d8348;       /* verde */
+  --azul: #1a4f9c;        /* azul */
+  --vermelho: #c0392b;    /* vermelho */
+  --preto: #111;          /* preto */
+
+  /* Mapeamento para o tema existente */
+  --bg: var(--verde);     /* cor de fundo principal */
+  --ink: var(--preto);    /* texto principal */
+  --salmon: var(--azul);  /* cor de destaque/ilustração */
+  --tab: #ecdcc7;         /* variação do bege para abas */
+  --tab-stroke: #cdbfa9;
   --white: #ffffff;
 }
 
@@ -47,7 +54,7 @@ body {
 .logo {
   font-size: 92px; line-height: 0.8; margin: 0; letter-spacing: 2px; color: var(--ink);
 }
-.subtitle { margin: 0 0 12px; color: #e24b2b; font-weight: 700; text-transform: uppercase; }
+.subtitle { margin: 0 0 12px; color: #6b8f3a; font-weight: 700; text-transform: uppercase; }
 
 /* Abas em formato de pastas */
 .tabs {
@@ -100,4 +107,3 @@ body {
   .logo { font-size: 64px; }
   .tabs { overflow-x: auto; }
 }
-
