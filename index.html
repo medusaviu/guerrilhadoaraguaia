@@ -244,12 +244,28 @@
             border-radius: 5px;
         }
         
+        /* Estilos para o mapa do QGIS */
+        .qgis-map-container {
+            height: 600px;
+            width: 100%;
+            margin: 1rem 0;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .qgis-map {
+            height: 100%;
+            width: 100%;
+            border: none;
+        }
+        
         @media (max-width: 768px) {
             .tab {
                 flex-basis: 50%;
             }
             
-            #map-container {
+            #map-container, .qgis-map-container {
                 height: 400px;
             }
             
@@ -268,7 +284,7 @@
                 flex-basis: 100%;
             }
             
-            #map-container {
+            #map-container, .qgis-map-container {
                 height: 300px;
             }
             
@@ -324,13 +340,19 @@
             <h2>Mapa da Região da Guerrilha do Araguaia</h2>
             <p>Este mapa interativo apresenta a região do conflito, com destaque para os locais significativos relacionados à Guerrilha do Araguaia. A curadoria e elaboração cartográfica é de Jenifer Silva (2025), utilizando QGIS e qgis2web.</p>
             
-            <div id="map-container">
-                <div id="map"></div>
+            <div class="qgis-map-container">
+                <iframe id="qgis-map" class="qgis-map" src="mapa.html" frameborder="0"></iframe>
             </div>
             
             <div class="content-section">
                 <h3>Como interpretar o mapa</h3>
-                <p>Os marcadores em vermelho indicam os principais locais de confronto. As linhas representam rotas utilizadas pelos guerrilheiros e pelas forças militares. As áreas sombreadas mostram a extensão aproximada da atuação da guerrilha.</p>
+                <p>O mapa mostra a região da bacia do Rio Araguaia, onde ocorreram os principais confrontos entre guerrilheiros e forças militares. As camadas incluem:</p>
+                <ul>
+                    <li>Limites estaduais (Pará, Maranhão, Tocantins/Goiás)</li>
+                    <li>Rio Araguaia e sua bacia hidrográfica</li>
+                    <li>Cidades envolvidas no conflito</li>
+                    <li>Áreas de atuação da guerrilha</li>
+                </ul>
                 
                 <h3>Metodologia de Elaboração</h3>
                 <p>O mapa foi desenvolvido a partir de pesquisa bibliográfica, registros históricos e georreferenciamento de locais mencionados em relatos e documentos sobre a Guerrilha do Araguaia. A base cartográfica foi tratada no QGIS com posterior exportação via qgis2web.</p>
@@ -440,7 +462,7 @@
         <div class="logo-container">
             <h3 class="logo-title">Realização e Apoio</h3>
             <div class="logos">
-                <img class="C:\Users\jenif\OneDrive\Área de Trabalho\UNIVERIDADE\PROJETOS CARTOGRÁFICOS - TRABALHO\MAPA JORGE PINHEIRO\PROFHISTORIA.png"></img>
+                <div class="logo-placeholder">Logo ProfHistoria</div>
                 <div class="logo-placeholder">Logo Universidade</div>
                 <div class="logo-placeholder">Logo Financiadora</div>
                 <div class="logo-placeholder">Logo Parceiro</div>
@@ -454,9 +476,6 @@
         <p class="credits">Este trabalho é parte de um projeto educacional sem fins lucrativos</p>
     </footer>
 
-    <!-- Incluindo Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    
     <script>
         // Função para alternar entre abas
         function openTab(tabName) {
@@ -478,109 +497,14 @@
             // Ativar o botão correspondente
             event.currentTarget.classList.add('active');
             
-            // Redimensionar o mapa quando a aba for aberta
+            // Redimensionar o iframe do mapa quando a aba for aberta
             if (tabName === 'mapa') {
                 setTimeout(function() {
-                    map.invalidateSize();
+                    var iframe = document.getElementById('qgis-map');
+                    iframe.src = iframe.src; // Recarregar o iframe para garantir que funcione corretamente
                 }, 100);
             }
         }
-        
-        // Inicializar o mapa (substitua com as coordenadas e camadas do seu mapa exportado)
-        var map = L.map('map').setView([-5.5, -49.5], 7);
-        
-        // Adicionar camada base (substitua com a camada do seu mapa exportado)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="./resources/ol.css">
-        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
-        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
-        <link rel="stylesheet" href="./resources/qgis2web.css">
-        <style>
-        html, body {
-            background-color: #ffffff;
-        }
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: #444444!important;
-            border-radius: 0px;
-        }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: #444444!important;
-        }
-        .search-layer-input-search {
-            background-color: #f8f8f8!important;
-        }
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        } 
-        </style>
-
-        <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-            <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
-            </div>
-        </div>
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
-        <script src="layers/PAR_2.js"></script><script src="layers/TOCANTISGOIAS_3.js"></script><script src="layers/MARANHAO_4.js"></script><script src="layers/RioAraguaia__5.js"></script><script src="layers/RioAraguaia_6.js"></script><script src="layers/Cidadesenvolvidas_7.js"></script>
-        <script src="styles/PAR_2_style.js"></script><script src="styles/TOCANTISGOIAS_3_style.js"></script><script src="styles/MARANHAO_4_style.js"></script><script src="styles/RioAraguaia__5_style.js"></script><script src="styles/RioAraguaia_6_style.js"></script><script src="styles/Cidadesenvolvidas_7_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
-    </body>
-</html>'
-        }).addTo(map);
-        
-        // Adicionar alguns marcadores de exemplo (substitua com os dados do seu mapa)
-        L.marker([-5.55, -49.5]).addTo(map)
-            .bindPopup('<strong>Área de atuação da Guerrilha</strong><br>Região de implantação do PCdoB')
-            .openPopup();
-        
-        L.marker([-5.6, -49.4]).addTo(map)
-            .bindPopup('<strong>Local de confronto</strong><br>Primeiro embate em abril de 1972');
-        
-        L.marker([-5.52, -49.45]).addTo(map)
-            .bindPopup('<strong>Acampamento guerrilheiro</strong><br>Base de apoio logístico');
-            
-        // Adicionar uma área de polígono de exemplo
-        var polygon = L.polygon([
-            [-5.45, -49.6],
-            [-5.5, -49.3],
-            [-5.65, -49.4]
-        ], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.2
-        }).addTo(map).bindPopup('Região principal da Guerrilha do Araguaia');
     </script>
 </body>
-</html>
 </html>
