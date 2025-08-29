@@ -2,677 +2,461 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-    <title>Guerrilha do Araguaia - Jenifer Silva</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/leaflet/leaflet@main/dist/leaflet.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerrilha do Araguaia - Mapa Interativo</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #f8f5f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+            min-height: 100vh;
             color: #333;
-            line-height: 1.6;
         }
-        
-        header {
-            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
-            color: white;
-            padding: 1.5rem;
+
+        .header {
+            background: rgba(139, 69, 19, 0.95);
+            color: #F5DEB3;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
+
+        .header h1 {
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        
-        .subtitle {
+
+        .header p {
             font-size: 1.1rem;
-            font-weight: normal;
+            opacity: 0.9;
         }
-        
-        .author {
-            margin-top: 1rem;
-            font-style: italic;
-            font-size: 1rem;
-        }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 2rem;
         }
-        
-        /* Estilo das abas */
+
         .tabs {
             display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px 15px 0 0;
             overflow: hidden;
+            margin-bottom: 0;
         }
-        
-        .tab {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
+
+        .tab-button {
+            flex: 1;
+            background: rgba(210, 105, 30, 0.8);
             border: none;
-            background-color: #e9e1d2;
-            flex-grow: 1;
-            text-align: center;
+            color: #F5DEB3;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .tab:hover {
-            background-color: #d6c9b1;
+
+        .tab-button:hover {
+            background: rgba(210, 105, 30, 1);
+            transform: translateY(-2px);
         }
-        
-        .tab.active {
-            background-color: #8B4513; /* Marrom histórico */
-            color: white;
+
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.95);
+            color: #8B4513;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
-        .tab:nth-child(2).active {
-            background-color: #556B2F; /* Verde histórico */
-        }
-        
-        .tab:nth-child(3).active {
-            background-color: #8B0000; /* Vermelho histórico */
-        }
-        
-        .tab:nth-child(4).active {
-            background-color: #483D8B; /* Azul histórico */
-        }
-        
-        .tab:nth-child(5).active {
-            background-color: #5D3954; /* Roxo histórico */
-        }
-        
-        /* Conteúdo das abas */
+
         .tab-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0 15px 15px;
+            padding: 2rem;
+            min-height: 600px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .tab-pane {
             display: none;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
         }
-        
-        .tab-content.active {
+
+        .tab-pane.active {
             display: block;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.5s ease-in;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Estilo do conteúdo */
+
         .content-section {
             margin-bottom: 2rem;
         }
-        
+
         .content-section h2 {
-            color: #8B0000;
+            color: #8B4513;
+            font-size: 1.8rem;
             margin-bottom: 1rem;
-            border-bottom: 2px solid #8B4513;
+            border-bottom: 3px solid #D2691E;
             padding-bottom: 0.5rem;
         }
-        
+
         .content-section h3 {
-            color: #556B2F;
+            color: #D2691E;
+            font-size: 1.4rem;
             margin: 1.5rem 0 0.8rem 0;
         }
-        
+
         .content-section p {
+            line-height: 1.8;
             margin-bottom: 1rem;
             text-align: justify;
         }
-        
-        .content-section ul {
-            margin-left: 1.5rem;
+
+        .map-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            margin: 1rem 0;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #F5DEB3 0%, #DEB887 100%);
+            border-left: 5px solid #8B4513;
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .author-info {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: #F5DEB3;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .author-info h3 {
+            color: #F5DEB3;
             margin-bottom: 1rem;
         }
-        
-        .content-section blockquote {
-            border-left: 4px solid #8B4513;
-            padding-left: 1rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: #555;
-        }
-        
-        .image-placeholder {
-            background-color: #e9e1d2;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 1.5rem 0;
-            border-radius: 5px;
-            font-style: italic;
-            color: #777;
-        }
-        
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .credits {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        
-        .logo-section {
-            background-color: #f8f5f0;
+
+        .timeline {
+            position: relative;
             padding: 2rem 0;
-            text-align: center;
         }
-        
-        .logo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #D2691E;
+            transform: translateX(-50%);
         }
-        
-        .logo-title {
-            color: #8B0000;
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            width: 45%;
         }
-        
-        .logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
         }
-        
-        .logo {
-            height: 80px;
-            width: auto;
-            background-color: white;
-            padding: 0.5rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .timeline-item:nth-child(even) {
+            left: 55%;
         }
-        
-        .logo-placeholder {
-            width: 160px;
-            height: 80px;
-            background-color: #e9e1d2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-style: italic;
-            border-radius: 5px;
-        }
-        
-        /* Estilos para o mapa do QGIS */
-        .qgis-map-container {
-            height: 600px;
-            width: 100%;
-            margin: 1rem 0;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             position: relative;
         }
-        
-        #qgis-map {
-            height: 100%;
-            width: 100%;
-        }
-        
-        .ol-popup {
+
+        .timeline-content::before {
+            content: '';
             position: absolute;
-            background-color: white;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 280px;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: #8B4513;
+            border-radius: 50%;
+            transform: translateY(-50%);
         }
-        
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -60px;
         }
-        
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -60px;
         }
-        
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
+
+        .footer {
+            background: rgba(139, 69, 19, 0.95);
+            color: #F5DEB3;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
         }
-        
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-        }
-        
-        .ol-popup-closer:after {
-            content: "✖";
-        }
-        
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: #444444!important;
-            border-radius: 0px;
-        }
-        
-        .ol-attribution a {
-            color: #444444!important;
-        }
-        
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        }
-        
+
         @media (max-width: 768px) {
-            .tab {
-                flex-basis: 50%;
-            }
-            
-            .qgis-map-container {
-                height: 400px;
-            }
-            
-            .logos {
-                gap: 1rem;
-            }
-            
-            .logo, .logo-placeholder {
-                height: 60px;
-                width: 120px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .tab {
-                flex-basis: 100%;
-            }
-            
-            .qgis-map-container {
-                height: 300px;
-            }
-            
-            .logos {
+            .tabs {
                 flex-direction: column;
-                gap: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                margin-left: 50px;
+            }
+            
+            .timeline-content::before {
+                left: -45px !important;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Guerrilha do Araguaia: Memória, Mapa e Resistência</h1>
-            <p class="subtitle">Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
-            <p class="author">Site e curadoria: Jenifer Silva | 2025</p>
-        </div>
-    </header>
-    
+    <div class="header">
+        <h1>🗺️ Guerrilha do Araguaia</h1>
+        <p>Mapa Interativo - Conflito Armado no Brasil (1972-1974)</p>
+    </div>
+
     <div class="container">
         <div class="tabs">
-            <button class="tab active" onclick="openTab('contexto')">Contexto Histórico</button>
-            <button class="tab" onclick="openTab('mapa')">Mapa Interativo</button>
-            <button class="tab" onclick="openTab('conflito')">O Conflito</button>
-            <button class="tab" onclick="openTab('memoria')">Memória e Verdade</button>
-            <button class="tab" onclick="openTab('referencias')">Referências</button>
+            <button class="tab-button active" onclick="openTab('sobre')">Sobre</button>
+            <button class="tab-button" onclick="openTab('mapa')">Mapa Interativo</button>
+            <button class="tab-button" onclick="openTab('historia')">História</button>
+            <button class="tab-button" onclick="openTab('timeline')">Linha do Tempo</button>
+            <button class="tab-button" onclick="openTab('pesquisa')">Pesquisa</button>
         </div>
-        
-        <div id="contexto" class="tab-content active">
-            <h2>Contexto Histórico da Guerrilha do Araguaia</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Brasil durante a Ditadura Militar]
+
+        <div class="tab-content">
+            <!-- Aba Sobre -->
+            <div id="sobre" class="tab-pane active">
+                <div class="content-section">
+                    <h2>🎯 Sobre o Projeto</h2>
+                    <p>Este mapa interativo representa uma ferramenta educacional inovadora para o ensino de História, desenvolvida como parte de uma pesquisa de Mestrado Profissional. O projeto visa facilitar a compreensão de um dos períodos mais complexos da história brasileira através da cartografia digital.</p>
+                    
+                    <div class="highlight-box">
+                        <h3>📚 Objetivo Educacional</h3>
+                        <p>O mapa permite aos estudantes e pesquisadores visualizar espacialmente os eventos da Guerrilha do Araguaia, compreendendo melhor a geografia do conflito e suas implicações históricas. Esta abordagem cartográfica inova no ensino de História, tornando o aprendizado mais dinâmico e interativo.</p>
+                    </div>
+                </div>
+
+                <div class="author-info">
+                    <h3>👨‍🎓 Autor da Pesquisa</h3>
+                    <p><strong>Jorge Kitchell Pinheiro Lima</strong></p>
+                    <p>Mestrando do Programa de Mestrado Profissional no Ensino de História - ProfHistória</p>
+                    <p>Este trabalho representa uma contribuição significativa para a metodologia de ensino de História através de tecnologias digitais.</p>
+                </div>
             </div>
-            
-            <p>A Guerrilha do Araguaia (1972-1974) ocorreu durante o período mais repressivo da Ditadura Militar brasileira (1964-1985), inserindo-se no contexto da Guerra Fria e das lutas por libertação nacional no Terceiro Mundo.</p>
-            
-            <h3>Antecedentes Políticos</h3>
-            <p>O golpe militar de 1964 instaurou um regime autoritário que suprimiu direitos civis, dissolveu partidos políticos e implementou a censura prévia. A resistência ao regime assumiu diversas formas, desde a atuação parlamentar até a luta armada.</p>
-            
-            <h3>O PCdoB e a Opção pela Luta Armada</h3>
-            <p>O Partido Comunista do Brasil (PCdoB), fundado em 1962 após cisão com o PCB, defendia a Revolução Socialista como caminho para transformar a sociedade brasileira. Inspirado pela Revolução Cubana e pelas experiências de libertação nacional, o partido optou pela estratégia de guerrilha rural como forma de resistência ao regime militar.</p>
-            
-            <blockquote>
-                "A guerrilha representava a convicção de que era possível repetir no Brasil a experiência bem-sucedida de Cuba e China, adaptando-a às particularidades nacionais."
-            </blockquote>
-            
-            <h3>A Escolha da Região do Araguaia</h3>
-            <p>A bacia do Rio Araguaia, na divisa dos estados do Pará, Maranhão e Goiás (atual Tocantins), foi escolhida por sua localização estratégica, distante dos grandes centros urbanos, com difícil acesso e presença do Estado limitada, fatores considerados ideais para o estabelecimento de um foco guerrilheiro.</p>
-        </div>
-        
-        <div id="mapa" class="tab-content">
-            <h2>Mapa da Região da Guerrilha do Araguaia</h2>
-            <p>Este mapa interativo apresenta a região do conflito, com destaque para os locais significativos relacionados à Guerrilha do Araguaia. A curadoria e elaboração cartográfica é de Jenifer Silva (2025), utilizando QGIS e qgis2web.</p>
-            
-            <div class="qgis-map-container">
-                <div id="qgis-map">
-                    <div id="popup" class="ol-popup">
-                        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                        <div id="popup-content"></div>
+
+            <!-- Aba Mapa Interativo -->
+            <div id="mapa" class="tab-pane">
+                <div class="content-section">
+                    <h2>🗺️ Mapa Interativo da Guerrilha do Araguaia</h2>
+                    <p>Explore o mapa interativo abaixo para visualizar os locais, rotas e eventos relacionados à Guerrilha do Araguaia. Utilize os controles do mapa para navegar, fazer zoom e ativar/desativar diferentes camadas de informação.</p>
+                    
+                    <div class="map-container">
+                        <iframe src="./qgis2web_2025_08_29-14_10_44_959170/index.html" title="Mapa da Guerrilha do Araguaia"></iframe>
+                    </div>
+                    
+                    <div class="highlight-box">
+                        <h3>🎮 Como Usar o Mapa</h3>
+                        <ul style="margin-left: 2rem; line-height: 1.8;">
+                            <li><strong>Zoom:</strong> Use a roda do mouse ou os botões +/- para aproximar ou afastar</li>
+                            <li><strong>Navegação:</strong> Clique e arraste para mover o mapa</li>
+                            <li><strong>Camadas:</strong> Use o painel de camadas para ativar/desativar diferentes elementos</li>
+                            <li><strong>Informações:</strong> Clique nos pontos para ver detalhes sobre cada local</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            
-            <div class="content-section">
-                <h3>Como interpretar o mapa</h3>
-                <p>O mapa mostra a região da bacia do Rio Araguaia, onde ocorreram os principais confrontos entre guerrilheiros e forças militares. As camadas incluem:</p>
-                <ul>
-                    <li>Limites estaduais (Pará, Maranhão, Tocantins/Goiás)</li>
-                    <li>Rio Araguaia e sua bacia hidrográfica</li>
-                    <li>Cidades envolvidas no conflito</li>
-                    <li>Áreas de atuação da guerrilha</li>
-                </ul>
-                
-                <h3>Metodologia de Elaboração</h3>
-                <p>O mapa foi desenvolvido a partir de pesquisa bibliográfica, registros históricos e georreferenciamento de locais mencionados em relatos e documentos sobre a Guerrilha do Araguaia. A base cartográfica foi tratada no QGIS com posterior exportação via qgis2web.</p>
+
+            <!-- Aba História -->
+            <div id="historia" class="tab-pane">
+                <div class="content-section">
+                    <h2>📖 A Guerrilha do Araguaia</h2>
+                    <p>A Guerrilha do Araguaia foi um movimento armado de resistência contra a ditadura militar brasileira (1964-1985), ocorrido entre 1972 e 1974 na região do Vale do Araguaia, nos estados do Pará, Maranhão e Goiás (atual Tocantins).</p>
+                    
+                    <h3>🎯 Contexto Histórico</h3>
+                    <p>O movimento foi organizado pelo Partido Comunista do Brasil (PCdoB) e tinha como objetivo estabelecer uma base revolucionária no campo, seguindo o modelo da Revolução Cubana. Os guerrilheiros buscavam mobilizar camponeses e trabalhadores rurais contra o regime militar.</p>
+                    
+                    <h3>⚔️ O Conflito</h3>
+                    <p>Entre 1972 e 1974, o Exército Brasileiro realizou três campanhas militares contra os guerrilheiros. A repressão foi extremamente violenta, resultando na morte de aproximadamente 70 guerrilheiros e camponeses. Muitos corpos nunca foram encontrados, tornando-se um dos episódios mais sombrios da ditadura militar.</p>
+                    
+                    <h3>🏛️ Legado Histórico</h3>
+                    <p>A Guerrilha do Araguaia representa um capítulo fundamental da resistência à ditadura militar e continua sendo objeto de investigação e debate na historiografia brasileira. O episódio ilustra a violência do regime militar e a luta pela democracia no Brasil.</p>
+                </div>
             </div>
-        </div>
-        
-        <div id="conflito" class="tab-content">
-            <h2>O Conflito Armado</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Região do Araguaia na época do conflito]
+
+            <!-- Aba Linha do Tempo -->
+            <div id="timeline" class="tab-pane">
+                <div class="content-section">
+                    <h2>⏰ Linha do Tempo da Guerrilha do Araguaia</h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1966-1971</h3>
+                                <p>Preparação e infiltração de militantes do PCdoB na região do Araguaia. Os guerrilheiros se estabelecem como camponeses e começam a organizar a resistência.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1972 - Primeira Campanha</h3>
+                                <p>O Exército inicia a primeira campanha militar contra os guerrilheiros. A operação é surpreendida pela organização e resistência dos militantes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1973 - Segunda Campanha</h3>
+                                <p>Segunda ofensiva militar com maior número de soldados e equipamentos. Os guerrilheiros sofrem baixas significativas.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1974 - Terceira Campanha</h3>
+                                <p>Última e mais brutal campanha militar. O Exército utiliza táticas de guerra psicológica e violência extrema contra guerrilheiros e camponeses.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1975-1985</h3>
+                                <p>Período de silenciamento sobre o episódio. Famílias dos desaparecidos iniciam a luta pela verdade e justiça.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>1985-Presente</h3>
+                                <p>Redemocratização permite investigações sobre o período. Comissão da Verdade investiga os crimes da ditadura, incluindo a Guerrilha do Araguaia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <h3>Primeira Fase (1972)</h3>
-            <p>Os primeiros confrontos ocorreram em abril de 1972, quando as Forças Armadas detectaram a presença guerrilheira na região. Inicialmente, o Exército subestimou a dimensão do movimento, enviando pequenas tropas que foram surpreendidas pelo conhecimento territorial dos guerrilheiros.</p>
-            
-            <h3>Segunda Fase (1973)</h3>
-            <p>Em 1973, o Exército mobilizou efetivo maior, entre 3.000 a 5.000 soldados, utilizando helicópteros, aviões e métodos de guerra não convencional. Os militares implementaram a estratégia de "cerca viva", isolando a região e pressionando a população local para obter informações.</p>
-            
-            <h3>Terceira Fase (1974)</h3>
-            <p>Em 1974, com efetivo ampliado para cerca de 10.000 soldados, as operações militares se intensificaram. Os guerrilheiros, isolados e sem apoio externo, foram progressivamente dizimados. Muitos foram capturados, torturados e executados, seus corpos nunca foram localizados.</p>
-            
-            <h3>O Papel da População Local</h3>
-            <p>Os camponeses da região foram peças-chave no conflito, ora apoiando os guerrilheiros, ora sendo coagidos pelas forças militares. Muitos sofreram violências, deslocamentos forçados e perseguições tanto durante quanto após o conflito.</p>
-            
-            <blockquote>
-                "A população local ficou no meio fogo cruzado, sofrendo as consequências de um conflito que não escolheram."
-            </blockquote>
-        </div>
-        
-        <div id="memoria" class="tab-content">
-            <h2>Memória, Verdade e Justiça</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Familiares de desaparecidos políticos]
-            </div>
-            
-            <h3>Os Desaparecimentos e a Luta por Verdade</h3>
-            <p>Estima-se que 69 guerrilheiros tenham sido mortos durante o conflito, a maioria executada após captura. Seus corpos foram ocultados pelo Estado, tornando-os desaparecidos políticos. Por décadas, familiares buscaram informações sobre o paradeiro de seus entes queridos.</p>
-            
-            <h3>A Comissão Nacional da Verdade</h3>
-            <p>Instalada em 2012, a CNV investigou as graves violações de direitos humanos ocorridas entre 1946 e 1988. Seu relatório, publicado em 2014, confirmou a responsabilidade do Estado brasileiro pelas execuções, torturas e ocultação de cadáveres na Guerrilha do Araguaia.</p>
-            
-            <h3>O Direito à Memória como Instrumento Pedagógico</h3>
-            <p>O ensino da Guerrilha do Araguaia possibilita refletir sobre: </p>
-            <ul>
-                <li>Os mecanismos de repressão em regimes autoritários</li>
-                <li>A luta por direitos humanos e democracia</li>
-                <li>O papel da memória na construção da identidade nacional</li>
-                <li>A importância da verdade e da justiça para a reconciliação social</li>
-            </ul>
-            
-            <h3>Jorge Pinheiro e a Pesquisa em Ensino de História</h3>
-            <p>A pesquisa de Jorge Kitchell Pinheiro Lima, desenvolvida no âmbito do Mestrado Profissional no Ensino de História (ProfHistoria), analisa as possibilidades didáticas do tema "Guerrilha do Araguaia" em sala de aula, propondo materiais e approaches pedagógicos que favoreçam o pensamento crítico dos estudantes.</p>
-        </div>
-        
-        <div id="referencias" class="tab-content">
-            <h2>Referências Bibliográficas</h2>
-            
-            <h3>Livros e Teses</h3>
-            <ul>
-                <li>GASPARI, Elio. A ditadura envergonhada. São Paulo: Intrínseca, 2014.</li>
-                <li>REIS, Daniel Aarão. Ditadura militar, esquerdas e sociedade. Rio de Janeiro: Zahar, 2000.</li>
-                <li>ROLIM, César. Guerrilha do Araguaia: a esquerda em armas. São Paulo: Editora UNESP, 2005.</li>
-                <li>PINHEIRO, Jorge Kitchell Lima. "Guerrilha do Araguaia no Ensino de História: materiais didáticos e approaches pedagógicos". Dissertação de Mestrado. ProfHistoria, 2024.</li>
-            </ul>
-            
-            <h3>Documentos Oficiais</h3>
-            <ul>
-                <li>COMISSÃO NACIONAL DA VERDADE. Relatório Final. Brasília: CNV, 2014.</li>
-                <li>PROJETO BRASIL: NUNCA MAIS. Arquivos da ditadura militar. Disponível em: https://bnmdigital.mpf.mp.br</li>
-            </ul>
-            
-            <h3>Artigos Acadêmicos</h3>
-            <ul>
-                <li>SAITO, H. T. "A Guerrilha do Araguaia: memória e história". Revista de História, v. 45, n. 2, 2010.</li>
-                <li>PEREIRA, A. M. "O ensino da Guerrilha do Araguaia: desafios e perspectivas". Revista de Ensino de História, v. 12, n. 3, 2018.</li>
-                <li>SILVA, Jenifer. "Cartografia histórica e memória: a Guerrilha do Araguaia em mapas digitais". Anais do Simpósio Nacional de Ensino de História, 2023.</li>
-            </ul>
-            
-            <h3>Fontes Online</h3>
-            <ul>
-                <li>Memórias da Ditadura - Instituto Vladimir Herzog. Disponível em: https://memoriasdaditadura.org.br</li>
-                <li>Centro de Referência das Lutas Políticas no Brasil (1964-1985). Disponível em: http://www.memoriasreveladas.gov.br</li>
-            </ul>
-            
-            <h3>Recursos Audiovisuais</h3>
-            <ul>
-                <li>Documentário "Campo de Batalha - Araguaia" (2018)</li>
-                <li>Série "Democracia em Vertigem" (2019)</li>
-                <li>Acervo digital do Jornal do Brasil sobre a Guerrilha do Araguaia</li>
-            </ul>
-            
-            <div class="content-section">
-                <h2>Créditos e Agradecimentos</h2>
-                <p><strong>Pesquisa original:</strong> Jorge Kitchell Pinheiro Lima | ProfHistoria</p>
-                <p><strong>Site, mapa e curadoria:</strong> Jenifer Silva | 2025</p>
-                <p><strong>Desenvolvimento web:</strong> Jenifer Silva</p>
-                <p><strong>Cartografia:</strong> QGIS e qgis2web</p>
-                <p><strong>Apoio:</strong> Mestrado Profissional no Ensino de História - ProfHistoria</p>
+
+            <!-- Aba Pesquisa -->
+            <div id="pesquisa" class="tab-pane">
+                <div class="content-section">
+                    <h2>🔬 Metodologia da Pesquisa</h2>
+                    <p>Esta pesquisa utiliza metodologias inovadoras que combinam História, Geografia e Tecnologia da Informação para criar ferramentas educacionais eficazes.</p>
+                    
+                    <h3>📊 Abordagem Metodológica</h3>
+                    <p>A pesquisa adota uma abordagem interdisciplinar, utilizando Sistemas de Informação Geográfica (SIG) para mapear eventos históricos. Esta metodologia permite uma visualização espacial dos acontecimentos, facilitando a compreensão dos estudantes.</p>
+                    
+                    <h3>🗺️ Uso de Tecnologias Digitais</h3>
+                    <p>O QGIS (Quantum Geographic Information System) foi utilizado para criar mapas interativos que permitem aos usuários explorar diferentes camadas de informação histórica. Esta ferramenta democratiza o acesso ao conhecimento histórico.</p>
+                    
+                    <div class="highlight-box">
+                        <h3>🎯 Contribuições para o Ensino</h3>
+                        <p>Esta pesquisa contribui significativamente para o campo do ensino de História ao:</p>
+                        <ul style="margin-left: 2rem; line-height: 1.8;">
+                            <li>Demonstrar a eficácia de tecnologias digitais no ensino</li>
+                            <li>Criar recursos educacionais acessíveis e interativos</li>
+                            <li>Facilitar a compreensão de eventos históricos complexos</li>
+                            <li>Promover o pensamento crítico através da análise espacial</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>📚 Referências e Fontes</h3>
+                    <p>A pesquisa baseia-se em documentação oficial, relatos de sobreviventes, trabalhos acadêmicos e fontes primárias relacionadas ao período da ditadura militar brasileira.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Seção de Logos -->
-    <div class="logo-section">
-        <div class="logo-container">
-            <h3 class="logo-title">Realização e Apoio</h3>
-            <div class="logos">
-                <div class="logo-placeholder">Logo ProfHistoria</div>
-                <div class="logo-placeholder">Logo Universidade</div>
-                <div class="logo-placeholder">Logo Financiadora</div>
-                <div class="logo-placeholder">Logo Parceiro</div>
-            </div>
-        </div>
+    <div class="footer">
+        <p>&copy; 2024 - Mapa Interativo da Guerrilha do Araguaia</p>
+        <p>Pesquisa de Mestrado - ProfHistória | Jorge Kitchell Pinheiro Lima</p>
     </div>
-    
-    <footer>
-        <p>Site desenvolvido por Jenifer Silva | 2025</p>
-        <p>Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
-        <p class="credits">Este trabalho é parte de um projeto educacional sem fins lucrativos</p>
-    </footer>
 
-    <!-- Scripts do mapa QGIS2Web -->
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     <script>
-        // Função para alternar entre abas
         function openTab(tabName) {
-            // Esconder todos os conteúdos de abas
-            var tabContents = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
+            // Esconde todas as abas
+            var tabPanes = document.getElementsByClassName('tab-pane');
+            for (var i = 0; i < tabPanes.length; i++) {
+                tabPanes[i].classList.remove('active');
             }
             
-            // Desativar todos os botões de aba
-            var tabs = document.getElementsByClassName('tab');
-            for (var i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
+            // Remove a classe active de todos os botões
+            var tabButtons = document.getElementsByClassName('tab-button');
+            for (var i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
             }
             
-            // Ativar a aba selecionada
+            // Mostra a aba selecionada
             document.getElementById(tabName).classList.add('active');
             
-            // Ativar o botão correspondente
-            event.currentTarget.classList.add('active');
-            
-            // Redimensionar o mapa quando a aba for aberta
-            if (tabName === 'mapa') {
-                setTimeout(function() {
-                    if (window.map) {
-                        window.map.updateSize();
-                    }
-                }, 100);
-            }
+            // Adiciona a classe active ao botão clicado
+            event.target.classList.add('active');
         }
 
-        // Inicialização do mapa (código simplificado para exemplo)
+        // Adiciona efeitos de scroll suave
         document.addEventListener('DOMContentLoaded', function() {
-            // Verificar se estamos na aba do mapa
-            const mapTab = document.getElementById('mapa');
-            if (mapTab.classList.contains('active')) {
-                initMap();
-            }
-            
-            // Adicionar evento para inicializar o mapa quando a aba for clicada
-            document.querySelector('[onclick="openTab(\'mapa\')"]').addEventListener('click', function() {
-                setTimeout(initMap, 100);
+            // Adiciona animação de entrada aos elementos
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observa todos os elementos de conteúdo
+            document.querySelectorAll('.content-section, .timeline-item, .highlight-box').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
             });
         });
-
-        function initMap() {
-            // Criar um mapa simples com OpenLayers
-            window.map = new ol.Map({
-                target: 'qgis-map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([-49.5, -5.5]),
-                    zoom: 7
-                })
-            });
-            
-            // Adicionar alguns pontos de exemplo relacionados à Guerrilha do Araguaia
-            const points = [
-                {coord: [-49.4, -5.6], title: "Área de Conflito Principal", desc: "Região com maior concentração de confrontos"},
-                {coord: [-49.3, -5.5], title: "Acampamento Guerrilheiro", desc: "Principal base de operações da guerrilha"},
-                {coord: [-49.6, -5.4], title: "Rio Araguaia", desc: "Principal via de transporte e abastecimento"},
-            ];
-            
-            const features = [];
-            
-            points.forEach(point => {
-                const iconFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat(point.coord)),
-                    name: point.title,
-                    description: point.desc
-                });
-                
-                const iconStyle = new ol.style.Style({
-                    image: new ol.style.Circle({
-                        radius: 6,
-                        fill: new ol.style.Fill({color: '#8B0000'}),
-                        stroke: new ol.style.Stroke({
-                            color: '#fff',
-                            width: 2
-                        })
-                    })
-                });
-                
-                iconFeature.setStyle(iconStyle);
-                features.push(iconFeature);
-            });
-            
-            const vectorSource = new ol.source.Vector({
-                features: features
-            });
-            
-            const vectorLayer = new ol.layer.Vector({
-                source: vectorSource
-            });
-            
-            window.map.addLayer(vectorLayer);
-            
-            // Configurar popup
-            const popup = document.getElementById('popup');
-            const popupContent = document.getElementById('popup-content');
-            const popupCloser = document.getElementById('popup-closer');
-            
-            const overlay = new ol.Overlay({
-                element: popup,
-                positioning: 'bottom-center',
-                stopEvent: false,
-                offset: [0, -10]
-            });
-            
-            window.map.addOverlay(overlay);
-            
-            popupCloser.onclick = function() {
-                overlay.setPosition(undefined);
-                popupCloser.blur();
-                return false;
-            };
-            
-            window.map.on('singleclick', function(evt) {
-                const feature = window.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-                    return feature;
-                });
-                
-                if (feature) {
-                    const coordinate = evt.coordinate;
-                    const content = `<h3>${feature.get('name')}</h3><p>${feature.get('description')}</p>`;
-                    popupContent.innerHTML = content;
-                    overlay.setPosition(coordinate);
-                } else {
-                    overlay.setPosition(undefined);
-                    popupCloser.blur();
-                }
-            });
-        }
     </script>
 </body>
 </html>
