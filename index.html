@@ -1,36 +1,585 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa Araguaia - Sobre</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerrilha do Araguaia - Acervo Histórico</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap">
+    <style>
+        :root {
+            --color-primary: #606C38;    /* Verde musgo */
+            --color-primary-light: #8A9A5B;
+            --color-primary-dark: #475324;
+            --color-background: #F8F4E3; /* Bege claro */
+            --color-text: #2A2B26;       /* Texto escuro */
+            --color-text-light: #5A5B56;
+            --color-accent: #A5A58D;     /* Complementar suave */
+            --color-border: #DAD7CD;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header e Navegação */
+        header {
+            padding: 30px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--color-primary-dark);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 100px;
+            overflow: hidden;
+            background: linear-gradient(to bottom, rgba(248, 244, 227, 0.9), rgba(248, 244, 227, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23F8F4E3"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%23DAD7CD" stroke-width="1"/></svg>');
+            background-size: 20px 20px;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: var(--color-primary-dark);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: var(--color-text-light);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        
+        .hero p strong {
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 16px 42px;
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Seções de conteúdo */
+        section {
+            padding: 100px 0;
+        }
+        
+        section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: var(--color-primary-dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-primary);
+        }
+        
+        .lead {
+            font-size: 1.3rem;
+            color: var(--color-text-light);
+            margin-bottom: 50px;
+            max-width: 800px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        
+        /* Grid e Cards */
+        .grid {
+            display: grid;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .card {
+            background-color: white;
+            border: 1px solid var(--color-border);
+            padding: 40px 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--color-primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h3 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .kicker {
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: block;
+        }
+        
+        .list {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        .list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .list li::before {
+            content: "—";
+            color: var(--color-primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .callout {
+            border-left: 4px solid var(--color-primary);
+            padding: 25px 30px;
+            background-color: rgba(96, 108, 56, 0.05);
+            margin: 30px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        /* Mapa Embed */
+        .map-container {
+            margin: 40px 0;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .map-embed {
+            aspect-ratio: 16/9;
+            width: 100%;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* Tabela de créditos */
+        .credits dl {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 15px;
+        }
+        
+        .credits dt {
+            color: var(--color-text-light);
+            font-weight: 500;
+        }
+        
+        .credits dd {
+            margin: 0;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 60px 0;
+            text-align: center;
+            color: var(--color-text-light);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+            background-color: white;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                text-align: center;
+                padding-top: 150px;
+            }
+            
+            .hero-content {
+                margin: 0 auto;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                margin: 0 auto 40px;
+            }
+            
+            .cols-2, .cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .lead {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Botão de voltar ao topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--color-primary-dark);
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Araguaia Memória</a>
+                <div class="nav-links">
+                    <a href="#sobre">Sobre</a>
+                    <a href="#mapa">Mapa</a>
+                    <a href="#historia">História</a>
+                    <a href="#acervo">Acervo</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-<header>
-  <div class="logo"><strong>Mapa Araguaia</strong></div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Sobre o mapa</a></li>
-      <li><a href="contexto.html">Contexto histórico</a></li>
-      <li><a href="autoria.html">Autoria</a></li>
-      <li><a href="uso.html">Como usar</a></li>
-    </ul>
-  </nav>
-</header>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>GUERRILHA DO ARAGUAIA</h1>
+                <p><strong>Em uma determinada cultura, os sistemas de representação, interpretação e todos os outros que permeiam o universo da comunicação estão naturalmente ligados aos costumes, ideias e práticas característicos daquele grupo.</strong> Por isso, não existe uma imparcialidade universal, sobretudo quando se trata da visão de mundo que comunicamos em nossos trabalhos como pesquisadores e educadores.</p>
+                <a href="#mapa" class="cta-button">Explorar Mapa Histórico</a>
+            </div>
+        </div>
+    </section>
 
-<section class="section">
-  <h1>Sobre o mapa</h1>
-  <p>
-    Este mapa interativo é produto do trabalho 
-    <em><strong>“Ensino de História e as memórias da Guerrilha do Araguaia: percepções de alunos e professores da Escola Estadual Professor Lício Solheiro (Brejo Grande do Araguaia - PA)”</strong></em>, 
-    realizado por Jorge Kitchell Pinheiro Lima no PROFHISTÓRIA.
-  </p>
-  <div style="margin-top:20px; aspect-ratio:16/9; background:#ccc; border:3px solid var(--preto);">
-    <!-- Aqui entra o iframe do mapa -->
-  </div>
-</section>
+    <section id="sobre">
+        <div class="container">
+            <h2>Sobre o projeto</h2>
+            <p class="lead">Este acervo digital reúne documentos, mapas e registros históricos sobre a Guerrilha do Araguaia, buscando preservar a memória e facilitar o acesso à informação sobre este importante capítulo da história brasileira.</p>
+            
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>O que você encontra</h3>
+                    <ul class="list">
+                        <li>Localização de eventos históricos relevantes da Guerrilha do Araguaia</li>
+                        <li>Pop-ups com textos explicativos, imagens históricas e vídeos</li>
+                        <li>Camadas temáticas: locais de conflito, acampamentos, rotas, memoriais</li>
+                        <li>Personagens históricos e suas trajetórias na região</li>
+                        <li>Informações sobre as operações militares e comunidades locais</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Metodologia</h3>
+                    <ul class="list">
+                        <li>Levantamento de fontes primárias e secundárias</li>
+                        <li>Pesquisa de campo e registro de memórias locais</li>
+                        <li>Georreferenciamento no QGIS e revisão cruzada com fontes históricas</li>
+                        <li>Teste pedagógico em sala de aula e oficinas com professores</li>
+                        <li>Análise qualitativa das percepções de alunos e educadores</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section id="mapa">
+        <div class="container">
+            <h2>Mapa Interativo</h2>
+            <p class="lead">Explore os locais e eventos significativos da Guerrilha do Araguaia através deste mapa interativo.</p>
+            
+            <div class="map-container">
+                <div class="map-embed">
+                    <!-- ESPAÇO PARA O MAPA DO QGIS2WEB -->
+                    <iframe src="SEU_LINK_DO_MAPA_AQUI.html" title="Mapa Interativo da Guerrilha do Araguaia"></iframe>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px; color: var(--color-text-light)">
+                Dica: se preferir, abra o mapa em uma nova aba <a href="SEU_LINK_DO_MAPA_AQUI.html" target="_blank" rel="noopener">clicando aqui</a>.
+            </p>
+        </div>
+    </section>
+
+    <section id="historia">
+        <div class="container">
+            <h2>Contexto histórico</h2>
+            <p class="lead">A Guerrilha do Araguaia (1972-1974) foi um dos episódios mais significativos de resistência à ditadura militar brasileira, representando a maior operação guerrilheira rural na história do país.</p>
+            
+            <div class="callout">
+                "Desde o final dos anos 1960, militantes do PCdoB iniciaram a infiltração na região do Bico do Papagaio, disfarçados como trabalhadores rurais, com o objetivo de estabelecer um foco revolucionário inspirado na Revolução Cubana."
+            </div>
+            
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>Estratégias e Táticas</h3>
+                    <ul class="list">
+                        <li>Emboscadas contra patrulhas militares</li>
+                        <li>Mobilidade constante entre bases secretas na floresta</li>
+                        <li>Uso de propaganda política entre os camponeses</li>
+                        <li>Auto-suficiência através da agricultura de subsistência</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Resposta Militar</h3>
+                    <ul class="list">
+                        <li>Bombardeios aéreos e artilharia</li>
+                        <li>Operações de cerco e aniquilamento</li>
+                        <li>Tortura sistemática de prisioneiros e suspeitos</li>
+                        <li>Execuções sumárias e desaparecimentos forçados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="acervo">
+        <div class="container">
+            <h2>Acervo Digital</h2>
+            <p class="lead">Nossa coleção reúne documentos, fotografias e materiais relacionados à Guerrilha do Araguaia, organizados para pesquisa e educação.</p>
+            
+            <div class="grid cols-3">
+                <div class="card">
+                    <h3>Documentos</h3>
+                    <p>Relatórios, ofícios e documentos oficiais que ajudam a reconstituir os eventos históricos.</p>
+                </div>
+                <div class="card">
+                    <h3>Fotografias</h3>
+                    <p>Registros visuais da época, lugares e pessoas envolvidas no conflito.</p>
+                </div>
+                <div class="card">
+                    <h3>Depoimentos</h3>
+                    <p>Testemunhos de sobreviventes, familiares e moradores da região.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato">
+        <div class="container">
+            <h2>Contato</h2>
+            <p class="lead">Entre em contato conosco para contribuir com o acervo, solicitar informações ou agendar visitas educativas.</p>
+            
+            <div class="card">
+                <h3>Informações</h3>
+                <div class="credits">
+                    <dl>
+                        <dt>Autoria</dt>
+                        <dd><strong>Jenifer Silva</strong> — desenvolvimento do mapa, curadoria de conteúdo e publicação.</dd>
+                        <dt>Orientação</dt>
+                        <dd>[Nome do(a) orientador(a)] — [Instituição].</dd>
+                        <dt>Instituição</dt>
+                        <dd>[Programa de Pós-Graduação / Universidade].</dd>
+                        <dt>Contato</dt>
+                        <dd><a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="ano"></span> Acervo Digital - Guerrilha do Araguaia | Projeto educacional sem fins lucrativos.</p>
+            <p>Todo o conteúdo é disponibilizado para fins educacionais e de pesquisa.</p>
+        </div>
+    </footer>
+
+    <div class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</div>
+
+    <script>
+        // Atualiza automaticamente o ano no rodapé
+        document.getElementById('ano').textContent = new Date().getFullYear();
+        
+        // Botão de voltar ao topo
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
