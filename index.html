@@ -1,48 +1,215 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Guerrilha do Araguaia — Webmapa</title>
-    <meta name="description" content="Site para visualização do webmapa da Guerrilha do Araguaia exportado pelo QGIS2Web.">
-    <link rel="icon" href="qgis2web_2025_08_29-11_05_01_239056/resources/marker.png">
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerrilha do Araguaia - Acervo Histórico</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap">
 </head>
 <body>
-    <header class="site-header" role="banner">
+    <header>
         <div class="container">
-            <h1 class="site-title">Guerrilha do Araguaia</h1>
-            <p class="site-subtitle">Webmapa interativo</p>
+            <nav>
+                <a href="#" class="logo">Araguaia Memória</a>
+                <div class="nav-links">
+                    <a href="#sobre">Sobre</a>
+                    <a href="#mapa">Mapa</a>
+                    <a href="#historia">História</a>
+                    <a href="#acervo">Acervo</a>
+                    <a href="#contato">Contato</a>
+                </div>
+                <button class="mobile-menu-btn" aria-label="Abrir menu">☰</button>
+            </nav>
         </div>
     </header>
 
-    <main class="site-main" id="conteudo" role="main">
-        <div class="map-container">
-            <iframe
-                class="map-frame"
-                title="Webmapa Guerrilha do Araguaia"
-                src="qgis2web_2025_08_29-11_05_01_239056/index.html"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen>
-            </iframe>
-            <noscript>
-                Ative o JavaScript para visualizar o mapa interativo.
-            </noscript>
-        </div>
-    </main>
-
-    <footer class="site-footer" role="contentinfo">
+    <section class="hero">
         <div class="container">
-            <small>
-                © <span id="year"></span> Guerrilha do Araguaia • Mapa gerado com QGIS2Web
-            </small>
+            <div class="hero-content">
+                <h1>GUERRILHA DO ARAGUAIA</h1>
+                <p><strong>Em uma determinada cultura, os sistemas de representação, interpretação e todos os outros que permeiam o universo da comunicação estão naturalmente ligados aos costumes, ideias e práticas característicos daquele grupo.</strong> Por isso, não existe uma imparcialidade universal, sobretudo quando se trata da visão de mundo que comunicamos em nossos trabalhos como pesquisadores e educadores.</p>
+                <a href="#mapa" class="cta-button">Explorar Mapa Histórico</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre">
+        <div class="container">
+            <h2>Sobre o projeto</h2>
+            <p class="lead">Este acervo digital reúne documentos, mapas e registros históricos sobre a Guerrilha do Araguaia, buscando preservar a memória e facilitar o acesso à informação sobre este importante capítulo da história brasileira.</p>
+            
+            <div class="grid cols-2">
+                <div class="card">
+                    <h3>O que você encontra</h3>
+                    <ul class="list">
+                        <li>Localização de eventos históricos relevantes da Guerrilha do Araguaia</li>
+                        <li>Pop-ups com textos explicativos, imagens históricas e vídeos</li>
+                        <li>Camadas temáticas: locais de conflito, acampamentos, rotas, memoriais</li>
+                        <li>Personagens históricos e suas trajetórias na região</li>
+                        <li>Informações sobre as operações militares e comunidades locais</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Metodologia</h3>
+                    <ul class="list">
+                        <li>Levantamento de fontes primárias e secundárias</li>
+                        <li>Pesquisa de campo e registro de memórias locais</li>
+                        <li>Georreferenciamento no QGIS e revisão cruzada com fontes históricas</li>
+                        <li>Teste pedagógico em sala de aula e oficinas com professores</li>
+                        <li>Análise qualitativa das percepções de alunos e educadores</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mapa">
+        <div class="container">
+            <h2>Mapa Interativo</h2>
+            <p class="lead">Explore os locais e eventos significativos da Guerrilha do Araguaia através deste mapa interativo.</p>
+            
+            <div class="map-container">
+                <div class="map-embed">
+                    <!-- ESPAÇO PARA O MAPA DO QGIS2WEB -->
+                    <iframe src="SEU_LINK_DO_MAPA_AQUI.html" title="Mapa Interativo da Guerrilha do Araguaia"></iframe>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px; color: var(--color-text-light)">
+                Dica: se preferir, abra o mapa em uma nova aba <a href="SEU_LINK_DO_MAPA_AQUI.html" target="_blank" rel="noopener">clicando aqui</a>.
+            </p>
+        </div>
+    </section>
+
+    <section id="historia">
+        <div class="container">
+            <h2>Contexto histórico</h2>
+            <p class="lead">A Guerrilha do Araguaia (1972-1974) foi um dos episódios mais significativos de resistência à ditadura militar brasileira, representando a maior operação guerrilheira rural na história do país.</p>
+            
+            <div class="callout">
+                "Desde o final dos anos 1960, militantes do PCdoB iniciaram a infiltração na região do Bico do Papagaio, disfarçados como trabalhadores rurais, com o objetivo de estabelecer um foco revolucionário inspirado na Revolução Cubana."
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">1966-1971</div>
+                        <div class="timeline-content">
+                            <h3>Preparação e Infiltração</h3>
+                            <p>Preparação e infiltração gradual de militantes na região, estabelecimento de bases e trabalho de conscientização com a população local.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Abril 1972</div>
+                        <div class="timeline-content">
+                            <h3>Início dos Confrontos</h3>
+                            <p>Início dos confrontos armados. A guerrilha é descoberta pelas forças de segurança após emboscada a uma patrulha militar.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">1972-1973</div>
+                        <div class="timeline-content">
+                            <h3>Primeiras Campanhas</h3>
+                            <p>Primeira e Segunda Campanhas militares. As forças armadas enfrentam dificuldades com o terreno e a resistência guerrilheira.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Out 1973-1974</div>
+                        <div class="timeline-content">
+                            <h3>Terceira Campanha</h3>
+                            <p>Terceira Campanha militar, com uso de tropas especiais e métodos de guerra não convencional. Cerco gradual e aniquilação da guerrilha.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">1975</div>
+                        <div class="timeline-content">
+                            <h3>Operações de Limpeza</h3>
+                            <p>Operações de "limpeza" e desaparecimento de corpos para ocultar evidências dos crimes cometidos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid cols-2" style="margin-top: 50px;">
+                <div class="card">
+                    <h3>Estratégias e Táticas</h3>
+                    <ul class="list">
+                        <li>Emboscadas contra patrulhas militares</li>
+                        <li>Mobilidade constante entre bases secretas na floresta</li>
+                        <li>Uso de propaganda política entre os camponeses</li>
+                        <li>Auto-suficiência através da agricultura de subsistência</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Resposta Militar</h3>
+                    <ul class="list">
+                        <li>Bombardeios aéreos e artilharia</li>
+                        <li>Operações de cerco e aniquilamento</li>
+                        <li>Tortura sistemática de prisioneiros e suspeitos</li>
+                        <li>Execuções sumárias e desaparecimentos forçados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="acervo">
+        <div class="container">
+            <h2>Acervo Digital</h2>
+            <p class="lead">Nossa coleção reúne documentos, fotografias e materiais relacionados à Guerrilha do Araguaia, organizados para pesquisa e educação.</p>
+            
+            <div class="grid cols-3">
+                <div class="card">
+                    <h3>Documentos</h3>
+                    <p>Relatórios, ofícios e documentos oficiais que ajudam a reconstituir os eventos históricos.</p>
+                </div>
+                <div class="card">
+                    <h3>Fotografias</h3>
+                    <p>Registros visuais da época, lugares e pessoas envolvidas no conflito.</p>
+                </div>
+                <div class="card">
+                    <h3>Depoimentos</h3>
+                    <p>Testemunhos de sobreviventes, familiares e moradores da região.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato">
+        <div class="container">
+            <h2>Contato</h2>
+            <p class="lead">Entre em contato conosco para contribuir com o acervo, solicitar informações ou agendar visitas educativas.</p>
+            
+            <div class="card">
+                <h3>Informações</h3>
+                <div class="credits">
+                    <dl>
+                        <dt>Autoria</dt>
+                        <dd><strong>Jenifer Silva</strong> — desenvolvimento do mapa, curadoria de conteúdo e publicação.</dd>
+                        <dt>Orientação</dt>
+                        <dd>[Nome do(a) orientador(a)] — [Instituição].</dd>
+                        <dt>Instituição</dt>
+                        <dd>[Programa de Pós-Graduação / Universidade].</dd>
+                        <dt>Contato</dt>
+                        <dd><a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="ano"></span> Acervo Digital - Guerrilha do Araguaia | Projeto educacional sem fins lucrativos.</p>
+            <p>Todo o conteúdo é disponibilizado para fins educacionais e de pesquisa.</p>
         </div>
     </footer>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
+    <div class="back-to-top" id="backToTop" aria-label="Voltar ao topo">↑</div>
+
+    <script src="js/main.js"></script>
+    <script src="js/timeline.js"></script>
 </body>
 </html>
-
