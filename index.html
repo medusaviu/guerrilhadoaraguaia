@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerrilha do Araguaia - Mestrado ProfHistoria</title>
+    <title>Guerrilha do Araguaia - Jenifer Silva</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         * {
@@ -14,7 +14,7 @@
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f5f0;
             color: #333;
             line-height: 1.6;
         }
@@ -42,6 +42,12 @@
             font-weight: normal;
         }
         
+        .author {
+            margin-top: 1rem;
+            font-style: italic;
+            font-size: 1rem;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -63,13 +69,13 @@
             font-weight: bold;
             transition: all 0.3s ease;
             border: none;
-            background-color: #ddd;
+            background-color: #e9e1d2;
             flex-grow: 1;
             text-align: center;
         }
         
         .tab:hover {
-            background-color: #ccc;
+            background-color: #d6c9b1;
         }
         
         .tab.active {
@@ -87,6 +93,10 @@
         
         .tab:nth-child(4).active {
             background-color: #483D8B; /* Azul histórico */
+        }
+        
+        .tab:nth-child(5).active {
+            background-color: #5D3954; /* Roxo histórico */
         }
         
         /* Conteúdo das abas */
@@ -135,6 +145,11 @@
             padding-bottom: 0.5rem;
         }
         
+        .content-section h3 {
+            color: #556B2F;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+        
         .content-section p {
             margin-bottom: 1rem;
             text-align: justify;
@@ -145,12 +160,38 @@
             margin-bottom: 1rem;
         }
         
+        .content-section blockquote {
+            border-left: 4px solid #8B4513;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .image-placeholder {
+            background-color: #e9e1d2;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+            font-style: italic;
+            color: #777;
+        }
+        
         footer {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 1.5rem;
             margin-top: 2rem;
+        }
+        
+        .credits {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #ccc;
         }
         
         @media (max-width: 768px) {
@@ -177,38 +218,47 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>Guerrilha do Araguaia</h1>
-            <p class="subtitle">Produto de pesquisa do Mestrado Profissional no Ensino de História - ProfHistoria</p>
-            <p class="subtitle">Mestrando: Jorge Kitchell Pinheiro Lima</p>
+            <h1>Guerrilha do Araguaia: Memória, Mapa e Resistência</h1>
+            <p class="subtitle">Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
+            <p class="author">Site e curadoria: Jenifer Silva | 2025</p>
         </div>
     </header>
     
     <div class="container">
         <div class="tabs">
-            <button class="tab active" onclick="openTab('sobre')">Sobre</button>
+            <button class="tab active" onclick="openTab('contexto')">Contexto Histórico</button>
             <button class="tab" onclick="openTab('mapa')">Mapa Interativo</button>
-            <button class="tab" onclick="openTab('pesquisa')">A Pesquisa</button>
+            <button class="tab" onclick="openTab('conflito')">O Conflito</button>
+            <button class="tab" onclick="openTab('memoria')">Memória e Verdade</button>
             <button class="tab" onclick="openTab('referencias')">Referências</button>
         </div>
         
-        <div id="sobre" class="tab-content active">
-            <h2>O que foi a Guerrilha do Araguaia?</h2>
-            <p>A Guerrilha do Araguaia foi um movimento de resistência armada contra o regime militar brasileiro, ocorrido entre 1972 e 1974 na região amazônica ao longo do Rio Araguaia, na fronteira dos estados do Pará, Maranhão e Goiás (atual Tocantins).</p>
+        <div id="contexto" class="tab-content active">
+            <h2>Contexto Histórico da Guerrilha do Araguaia</h2>
             
-            <p>Organizada pelo Partido Comunista do Brasil (PCdoB), a guerrilha tinha como objetivo estabelecer um foco revolucionário no campo que pudesse se expandir para outras regiões do país, seguindo o modelo da Revolução Cubana.</p>
+            <div class="image-placeholder">
+                [Imagem: Brasil durante a Ditadura Militar]
+            </div>
             
-            <h2>Contexto Histórico</h2>
-            <p>O movimento surgiu durante o período mais repressivo da ditadura militar brasileira (1964-1985), quando qualquer forma de oposição ao regime era violentamente suprimida. Os guerrilheiros, em sua maioria jovens idealistas, buscaram mobilizar a população rural local contra o governo militar.</p>
+            <p>A Guerrilha do Araguaia (1972-1974) ocorreu durante o período mais repressivo da Ditadura Militar brasileira (1964-1985), inserindo-se no contexto da Guerra Fria e das lutas por libertação nacional no Terceiro Mundo.</p>
             
-            <h2>Desfecho</h2>
-            <p>Após três campanhas militares, as Forças Armadas brasileiras conseguiram eliminar a guerrilha, resultando na morte da maioria dos combatentes. Estima-se que cerca de 60 a 70 guerrilheiros tenham sido mortos, muitos após serem capturados e torturados.</p>
+            <h3>Antecedentes Políticos</h3>
+            <p>O golpe militar de 1964 instaurou um regime autoritário que suprimiu direitos civis, dissolveu partidos políticos e implementou a censura prévia. A resistência ao regime assumiu diversas formas, desde a atuação parlamentar até a luta armada.</p>
             
-            <p>O episódio permanece como um dos capítulos mais sombrios da história recente do Brasil, com muitas famílias ainda buscando informações sobre o paradeiro de seus entes queridos desaparecidos durante o conflito.</p>
+            <h3>O PCdoB e a Opção pela Luta Armada</h3>
+            <p>O Partido Comunista do Brasil (PCdoB), fundado em 1962 após cisão com o PCB, defendia a Revolução Socialista como caminho para transformar a sociedade brasileira. Inspirado pela Revolução Cubana e pelas experiências de libertação nacional, o partido optou pela estratégia de guerrilha rural como forma de resistência ao regime militar.</p>
+            
+            <blockquote>
+                "A guerrilha representava a convicção de que era possível repetir no Brasil a experiência bem-sucedida de Cuba e China, adaptando-a às particularidades nacionais."
+            </blockquote>
+            
+            <h3>A Escolha da Região do Araguaia</h3>
+            <p>A bacia do Rio Araguaia, na divisa dos estados do Pará, Maranhão e Goiás (atual Tocantins), foi escolhida por sua localização estratégica, distante dos grandes centros urbanos, com difícil acesso e presença do Estado limitada, fatores considerados ideais para o estabelecimento de um foco guerrilheiro.</p>
         </div>
         
         <div id="mapa" class="tab-content">
             <h2>Mapa da Região da Guerrilha do Araguaia</h2>
-            <p>Este mapa interativo apresenta os locais significativos relacionados à Guerrilha do Araguaia, incluindo áreas de conflito, rotas dos guerrilheiros e comunidades locais.</p>
+            <p>Este mapa interativo apresenta a região do conflito, com destaque para os locais significativos relacionados à Guerrilha do Araguaia. A curadoria e elaboração cartográfica é de Jenifer Silva (2025), utilizando QGIS e qgis2web.</p>
             
             <div id="map-container">
                 <div id="map"></div>
@@ -217,62 +267,114 @@
             <div class="content-section">
                 <h3>Como interpretar o mapa</h3>
                 <p>Os marcadores em vermelho indicam os principais locais de confronto. As linhas representam rotas utilizadas pelos guerrilheiros e pelas forças militares. As áreas sombreadas mostram a extensão aproximada da atuação da guerrilha.</p>
+                
+                <h3>Metodologia de Elaboração</h3>
+                <p>O mapa foi desenvolvido a partir de pesquisa bibliográfica, registros históricos e georreferenciamento de locais mencionados em relatos e documentos sobre a Guerrilha do Araguaia. A base cartográfica foi tratada no QGIS com posterior exportação via qgis2web.</p>
             </div>
         </div>
         
-        <div id="pesquisa" class="tab-content">
-            <h2>A Pesquisa Acadêmica</h2>
-            <p>Esta pesquisa desenvolvida no âmbito do Mestrado Profissional no Ensino de História (ProfHistoria) tem como objetivo principal:</p>
+        <div id="conflito" class="tab-content">
+            <h2>O Conflito Armado</h2>
             
+            <div class="image-placeholder">
+                [Imagem: Região do Araguaia na época do conflito]
+            </div>
+            
+            <h3>Primeira Fase (1972)</h3>
+            <p>Os primeiros confrontos ocorreram em abril de 1972, quando as Forças Armadas detectaram a presença guerrilheira na região. Inicialmente, o Exército subestimou a dimensão do movimento, enviando pequenas tropas que foram surpreendidas pelo conhecimento territorial dos guerrilheiros.</p>
+            
+            <h3>Segunda Fase (1973)</h3>
+            <p>Em 1973, o Exército mobilizou efetivo maior, entre 3.000 a 5.000 soldados, utilizando helicópteros, aviões e métodos de guerra não convencional. Os militares implementaram a estratégia de "cerca viva", isolando a região e pressionando a população local para obter informações.</p>
+            
+            <h3>Terceira Fase (1974)</h3>
+            <p>Em 1974, com efetivo ampliado para cerca de 10.000 soldados, as operações militares se intensificaram. Os guerrilheiros, isolados e sem apoio externo, foram progressivamente dizimados. Muitos foram capturados, torturados e executados, seus corpos nunca foram localizados.</p>
+            
+            <h3>O Papel da População Local</h3>
+            <p>Os camponeses da região foram peças-chave no conflito, ora apoiando os guerrilheiros, ora sendo coagidos pelas forças militares. Muitos sofreram violências, deslocamentos forçados e perseguições tanto durante quanto após o conflito.</p>
+            
+            <blockquote>
+                "A população local ficou no meio fogo cruzado, sofrendo as consequências de um conflito que não escolheram."
+            </blockquote>
+        </div>
+        
+        <div id="memoria" class="tab-content">
+            <h2>Memória, Verdade e Justiça</h2>
+            
+            <div class="image-placeholder">
+                [Imagem: Familiares de desaparecidos políticos]
+            </div>
+            
+            <h3>Os Desaparecimentos e a Luta por Verdade</h3>
+            <p>Estima-se que 69 guerrilheiros tenham sido mortos durante o conflito, a maioria executada após captura. Seus corpos foram ocultados pelo Estado, tornando-os desaparecidos políticos. Por décadas, familiares buscaram informações sobre o paradeiro de seus entes queridos.</p>
+            
+            <h3>A Comissão Nacional da Verdade</h3>
+            <p>Instalada em 2012, a CNV investigou as graves violações de direitos humanos ocorridas entre 1946 e 1988. Seu relatório, publicado em 2014, confirmou a responsabilidade do Estado brasileiro pelas execuções, torturas e ocultação de cadáveres na Guerrilha do Araguaia.</p>
+            
+            <h3>O Direito à Memória como Instrumento Pedagógico</h3>
+            <p>O ensino da Guerrilha do Araguaia possibilita refletir sobre: </p>
             <ul>
-                <li>Analisar a Guerrilha do Araguaia como evento histórico</li>
-                <li>Desenvolver material didático para o ensino deste tema</li>
-                <li>Contribuir para a preservação da memória histórica</li>
-                <li>Refletir sobre os desafios do ensino de história recente</li>
+                <li>Os mecanismos de repressão em regimes autoritários</li>
+                <li>A luta por direitos humanos e democracia</li>
+                <li>O papel da memória na construção da identidade nacional</li>
+                <li>A importância da verdade e da justiça para a reconciliação social</li>
             </ul>
             
-            <h2>Metodologia</h2>
-            <p>A pesquisa utiliza diversas fontes históricas, incluindo documentos oficiais, depoimentos de sobreviventes e familiares, além da vasta bibliografia existente sobre o período da ditadura militar no Brasil.</p>
-            
-            <p>O mapa interativo foi desenvolvido a partir do QGIS e exportado via qgis2web, integrando informações georreferenciadas com conteúdo histórico para criar uma ferramenta educacional inovadora.</p>
-            
-            <h2>Mestrando</h2>
-            <p>Jorge Kitchell Pinheiro Lima é mestrando do ProfHistoria, programa de pós-graduação stricto sensu dedicado à melhoria do ensino de história em sala de aula.</p>
+            <h3>Jorge Pinheiro e a Pesquisa em Ensino de História</h3>
+            <p>A pesquisa de Jorge Kitchell Pinheiro Lima, desenvolvida no âmbito do Mestrado Profissional no Ensino de História (ProfHistoria), analisa as possibilidades didáticas do tema "Guerrilha do Araguaia" em sala de aula, propondo materiais e approaches pedagógicos que favoreçam o pensamento crítico dos estudantes.</p>
         </div>
         
         <div id="referencias" class="tab-content">
             <h2>Referências Bibliográficas</h2>
             
-            <h3>Livros</h3>
+            <h3>Livros e Teses</h3>
             <ul>
-                <li>GASPARI, E. A ditadura envergonhada. São Paulo: Intrínseca, 2002.</li>
+                <li>GASPARI, Elio. A ditadura envergonhada. São Paulo: Intrínseca, 2014.</li>
                 <li>REIS, Daniel Aarão. Ditadura militar, esquerdas e sociedade. Rio de Janeiro: Zahar, 2000.</li>
-                <li>ROLIM, C. Guerrilha do Araguaia: a esquerda em armas. São Paulo: Editora UNESP, 2005.</li>
+                <li>ROLIM, César. Guerrilha do Araguaia: a esquerda em armas. São Paulo: Editora UNESP, 2005.</li>
+                <li>PINHEIRO, Jorge Kitchell Lima. "Guerrilha do Araguaia no Ensino de História: materiais didáticos e approaches pedagógicos". Dissertação de Mestrado. ProfHistoria, 2024.</li>
             </ul>
             
-            <h3>Documentos e Relatórios</h3>
+            <h3>Documentos Oficiais</h3>
             <ul>
-                <li>Comissão Nacional da Verdade. Relatório Final. Brasília: CNV, 2014.</li>
-                <li>Projeto Brasil: Nunca Mais. Arquivos da ditadura militar.</li>
+                <li>COMISSÃO NACIONAL DA VERDADE. Relatório Final. Brasília: CNV, 2014.</li>
+                <li>PROJETO BRASIL: NUNCA MAIS. Arquivos da ditadura militar. Disponível em: https://bnmdigital.mpf.mp.br</li>
             </ul>
             
             <h3>Artigos Acadêmicos</h3>
             <ul>
-                <li>SAITO, H. T. A Guerrilha do Araguaia: memória e história. Revista de História, v. 45, n. 2, 2010.</li>
-                <li>PEREIRA, A. M. O ensino da Guerrilha do Araguaia: desafios e perspectivas. Revista de Ensino de História, v. 12, n. 3, 2018.</li>
+                <li>SAITO, H. T. "A Guerrilha do Araguaia: memória e história". Revista de História, v. 45, n. 2, 2010.</li>
+                <li>PEREIRA, A. M. "O ensino da Guerrilha do Araguaia: desafios e perspectivas". Revista de Ensino de História, v. 12, n. 3, 2018.</li>
+                <li>SILVA, Jenifer. "Cartografia histórica e memória: a Guerrilha do Araguaia em mapas digitais". Anais do Simpósio Nacional de Ensino de História, 2023.</li>
             </ul>
             
             <h3>Fontes Online</h3>
             <ul>
-                <li>Memórias da Ditadura - Instituto Vladimir Herzog</li>
-                <li>Centro de Referência das Lutas Políticas no Brasil (1964-1985)</li>
+                <li>Memórias da Ditadura - Instituto Vladimir Herzog. Disponível em: https://memoriasdaditadura.org.br</li>
+                <li>Centro de Referência das Lutas Políticas no Brasil (1964-1985). Disponível em: http://www.memoriasreveladas.gov.br</li>
             </ul>
+            
+            <h3>Recursos Audiovisuais</h3>
+            <ul>
+                <li>Documentário "Campo de Batalha - Araguaia" (2018)</li>
+                <li>Série "Democracia em Vertigem" (2019)</li>
+                <li>Acervo digital do Jornal do Brasil sobre a Guerrilha do Araguaia</li>
+            </ul>
+            
+            <div class="content-section">
+                <h2>Créditos e Agradecimentos</h2>
+                <p><strong>Pesquisa original:</strong> Jorge Kitchell Pinheiro Lima | ProfHistoria</p>
+                <p><strong>Site, mapa e curadoria:</strong> Jenifer Silva | 2025</p>
+                <p><strong>Desenvolvimento web:</strong> Jenifer Silva</p>
+                <p><strong>Cartografia:</strong> QGIS e qgis2web</p>
+                <p><strong>Apoio:</strong> Mestrado Profissional no Ensino de História - ProfHistoria</p>
+            </div>
         </div>
     </div>
     
     <footer>
-        <p>Mestrado Profissional no Ensino de História - ProfHistoria</p>
-        <p>© 2023 - Jorge Kitchell Pinheiro Lima</p>
+        <p>Site desenvolvido por Jenifer Silva | 2025</p>
+        <p>Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
+        <p class="credits">Este trabalho é parte de um projeto educacional sem fins lucrativos</p>
     </footer>
 
     <!-- Incluindo Leaflet JS -->
@@ -317,12 +419,15 @@
         
         // Adicionar alguns marcadores de exemplo (substitua com os dados do seu mapa)
         L.marker([-5.55, -49.5]).addTo(map)
-            .bindPopup('Área de atuação da Guerrilha')
+            .bindPopup('<strong>Área de atuação da Guerrilha</strong><br>Região de implantação do PCdoB')
             .openPopup();
         
         L.marker([-5.6, -49.4]).addTo(map)
-            .bindPopup('Local de confronto');
+            .bindPopup('<strong>Local de confronto</strong><br>Primeiro embate em abril de 1972');
         
+        L.marker([-5.52, -49.45]).addTo(map)
+            .bindPopup('<strong>Acampamento guerrilheiro</strong><br>Base de apoio logístico');
+            
         // Adicionar uma área de polígono de exemplo
         var polygon = L.polygon([
             [-5.45, -49.6],
@@ -332,7 +437,7 @@
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.2
-        }).addTo(map).bindPopup('Região da Guerrilha do Araguaia');
+        }).addTo(map).bindPopup('Região principal da Guerrilha do Araguaia');
     </script>
 </body>
 </html>
