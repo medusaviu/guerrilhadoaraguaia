@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <title>Guerrilha do Araguaia - Jenifer Silva</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/leaflet/leaflet@main/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -117,20 +118,6 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
-        }
-        
-        /* Estilo do mapa */
-        #map-container {
-            height: 600px;
-            margin: 1rem 0;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        #map {
-            height: 100%;
-            width: 100%;
         }
         
         /* Estilo do conteúdo */
@@ -252,12 +239,78 @@
             border-radius: 5px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
         }
         
-        .qgis-map {
+        #qgis-map {
             height: 100%;
             width: 100%;
-            border: none;
+        }
+        
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+        
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+        
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+        
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+        
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+        
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+        
+        .ol-control > * {
+            background-color: #f8f8f8!important;
+            color: #444444!important;
+            border-radius: 0px;
+        }
+        
+        .ol-attribution a {
+            color: #444444!important;
+        }
+        
+        .ol-control > *:focus, .ol-control >*:hover {
+            background-color: rgba(248, 248, 248, 0.7)!important;
+        } 
+        
+        .ol-control {
+            background-color: rgba(255,255,255,.4) !important;
+            padding: 2px !important;
         }
         
         @media (max-width: 768px) {
@@ -265,7 +318,7 @@
                 flex-basis: 50%;
             }
             
-            #map-container, .qgis-map-container {
+            .qgis-map-container {
                 height: 400px;
             }
             
@@ -284,7 +337,7 @@
                 flex-basis: 100%;
             }
             
-            #map-container, .qgis-map-container {
+            .qgis-map-container {
                 height: 300px;
             }
             
@@ -341,7 +394,12 @@
             <p>Este mapa interativo apresenta a região do conflito, com destaque para os locais significativos relacionados à Guerrilha do Araguaia. A curadoria e elaboração cartográfica é de Jenifer Silva (2025), utilizando QGIS e qgis2web.</p>
             
             <div class="qgis-map-container">
-                <iframe id="qgis-map" class="qgis-map" src="mapa.html" frameborder="0"></iframe>
+                <div id="qgis-map">
+                    <div id="popup" class="ol-popup">
+                        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                        <div id="popup-content"></div>
+                    </div>
+                </div>
             </div>
             
             <div class="content-section">
@@ -476,6 +534,8 @@
         <p class="credits">Este trabalho é parte de um projeto educacional sem fins lucrativos</p>
     </footer>
 
+    <!-- Scripts do mapa QGIS2Web -->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
     <script>
         // Função para alternar entre abas
         function openTab(tabName) {
@@ -497,13 +557,121 @@
             // Ativar o botão correspondente
             event.currentTarget.classList.add('active');
             
-            // Redimensionar o iframe do mapa quando a aba for aberta
+            // Redimensionar o mapa quando a aba for aberta
             if (tabName === 'mapa') {
                 setTimeout(function() {
-                    var iframe = document.getElementById('qgis-map');
-                    iframe.src = iframe.src; // Recarregar o iframe para garantir que funcione corretamente
+                    if (window.map) {
+                        window.map.updateSize();
+                    }
                 }, 100);
             }
+        }
+
+        // Inicialização do mapa (código simplificado para exemplo)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se estamos na aba do mapa
+            const mapTab = document.getElementById('mapa');
+            if (mapTab.classList.contains('active')) {
+                initMap();
+            }
+            
+            // Adicionar evento para inicializar o mapa quando a aba for clicada
+            document.querySelector('[onclick="openTab(\'mapa\')"]').addEventListener('click', function() {
+                setTimeout(initMap, 100);
+            });
+        });
+
+        function initMap() {
+            // Criar um mapa simples com OpenLayers
+            window.map = new ol.Map({
+                target: 'qgis-map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([-49.5, -5.5]),
+                    zoom: 7
+                })
+            });
+            
+            // Adicionar alguns pontos de exemplo relacionados à Guerrilha do Araguaia
+            const points = [
+                {coord: [-49.4, -5.6], title: "Área de Conflito Principal", desc: "Região com maior concentração de confrontos"},
+                {coord: [-49.3, -5.5], title: "Acampamento Guerrilheiro", desc: "Principal base de operações da guerrilha"},
+                {coord: [-49.6, -5.4], title: "Rio Araguaia", desc: "Principal via de transporte e abastecimento"},
+            ];
+            
+            const features = [];
+            
+            points.forEach(point => {
+                const iconFeature = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat(point.coord)),
+                    name: point.title,
+                    description: point.desc
+                });
+                
+                const iconStyle = new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 6,
+                        fill: new ol.style.Fill({color: '#8B0000'}),
+                        stroke: new ol.style.Stroke({
+                            color: '#fff',
+                            width: 2
+                        })
+                    })
+                });
+                
+                iconFeature.setStyle(iconStyle);
+                features.push(iconFeature);
+            });
+            
+            const vectorSource = new ol.source.Vector({
+                features: features
+            });
+            
+            const vectorLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+            
+            window.map.addLayer(vectorLayer);
+            
+            // Configurar popup
+            const popup = document.getElementById('popup');
+            const popupContent = document.getElementById('popup-content');
+            const popupCloser = document.getElementById('popup-closer');
+            
+            const overlay = new ol.Overlay({
+                element: popup,
+                positioning: 'bottom-center',
+                stopEvent: false,
+                offset: [0, -10]
+            });
+            
+            window.map.addOverlay(overlay);
+            
+            popupCloser.onclick = function() {
+                overlay.setPosition(undefined);
+                popupCloser.blur();
+                return false;
+            };
+            
+            window.map.on('singleclick', function(evt) {
+                const feature = window.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+                    return feature;
+                });
+                
+                if (feature) {
+                    const coordinate = evt.coordinate;
+                    const content = `<h3>${feature.get('name')}</h3><p>${feature.get('description')}</p>`;
+                    popupContent.innerHTML = content;
+                    overlay.setPosition(coordinate);
+                } else {
+                    overlay.setPosition(undefined);
+                    popupCloser.blur();
+                }
+            });
         }
     </script>
 </body>
