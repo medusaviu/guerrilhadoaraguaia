@@ -194,6 +194,56 @@
             color: #ccc;
         }
         
+        .logo-section {
+            background-color: #f8f5f0;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .logo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .logo-title {
+            color: #8B0000;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .logo {
+            height: 80px;
+            width: auto;
+            background-color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-placeholder {
+            width: 160px;
+            height: 80px;
+            background-color: #e9e1d2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-style: italic;
+            border-radius: 5px;
+        }
+        
         @media (max-width: 768px) {
             .tab {
                 flex-basis: 50%;
@@ -201,6 +251,15 @@
             
             #map-container {
                 height: 400px;
+            }
+            
+            .logos {
+                gap: 1rem;
+            }
+            
+            .logo, .logo-placeholder {
+                height: 60px;
+                width: 120px;
             }
         }
         
@@ -211,6 +270,11 @@
             
             #map-container {
                 height: 300px;
+            }
+            
+            .logos {
+                flex-direction: column;
+                gap: 1.5rem;
             }
         }
     </style>
@@ -370,6 +434,19 @@
             </div>
         </div>
     </div>
+
+    <!-- Seção de Logos -->
+    <div class="logo-section">
+        <div class="logo-container">
+            <h3 class="logo-title">Realização e Apoio</h3>
+            <div class="logos">
+                <div class="logo-placeholder">Logo ProfHistoria</div>
+                <div class="logo-placeholder">Logo Universidade</div>
+                <div class="logo-placeholder">Logo Financiadora</div>
+                <div class="logo-placeholder">Logo Parceiro</div>
+            </div>
+        </div>
+    </div>
     
     <footer>
         <p>Site desenvolvido por Jenifer Silva | 2025</p>
@@ -440,4 +517,5 @@
         }).addTo(map).bindPopup('Região principal da Guerrilha do Araguaia');
     </script>
 </body>
+</html>
 </html>
