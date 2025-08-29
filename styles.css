@@ -66,13 +66,20 @@ body {
   position: relative;
   border: 1px solid var(--tab-stroke);
   background: var(--tab);
+  background: var(--tab-bg, var(--tab));
   padding: 12px 16px;
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
   cursor: pointer;
   font-weight: 600;
 }
-.tab.is-active { background: var(--paper); border-bottom-color: transparent; z-index: 2; }
+.tab.is-active { background: var(--tab-bg-active, var(--paper)); border-bottom-color: transparent; z-index: 2; }
+
+/* Cores específicas por aba */
+#tab-manifesto { --tab-bg: #e3f1e8; --tab-bg-active: #cfe7d8; }
+#tab-acervo { --tab-bg: #e0e8f6; --tab-bg-active: #c7d6f0; }
+#tab-faca-parte { --tab-bg: #f7e1de; --tab-bg-active: #f0cfc9; }
+#tab-contato { --tab-bg: #f2eadf; --tab-bg-active: #e8ddcc; }
 
 .panels {
   position: relative;
@@ -101,9 +108,11 @@ body {
 .map-inner { max-width: 1100px; margin: 0 auto; }
 .map-inner h3 { margin: 0 0 12px; }
 .webmap { height: 480px; width: 100%; background: #d9d2c5; border: 1px dashed var(--tab-stroke); border-radius: 12px; }
+.webmap iframe { width: 100%; height: 100%; border: 0; border-radius: 12px; }
 
 /* Responsivo */
 @media (max-width: 720px) {
   .logo { font-size: 64px; }
   .tabs { overflow-x: auto; }
 }
+
