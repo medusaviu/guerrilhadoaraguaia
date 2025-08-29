@@ -3,204 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa Interativo - Guerrilha do Araguaia</title>
-  <style>
-    /* Reset */
-    * {margin:0; padding:0; box-sizing:border-box;}
-
-    :root {
-      --bg: #fdf6e3;
-      --text: #2c2c2c;
-      --accent: #8b0000;
-      --sepia: #a0522d;
-      --muted: #555;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      background: var(--bg);
-      color: var(--text);
-      scroll-behavior: smooth;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0; left: 0; width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-    nav {
-      display: flex; justify-content: space-between; align-items: center;
-      max-width: 1100px; margin: auto; padding: 15px 25px;
-    }
-    nav ul {
-      list-style: none;
-      display: flex; gap: 20px;
-    }
-    nav a {
-      text-decoration: none;
-      color: var(--text);
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: var(--accent);
-    }
-
-    /* Hero */
-    .hero {
-      height: 90vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/9/94/Araguaia_river.jpg') center/cover no-repeat;
-      color: white;
-      padding: 20px;
-    }
-    .hero h1 {
-      font-size: 3rem;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-    .hero p {
-      max-width: 700px;
-      margin-top: 15px;
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    }
-    .hero .btn {
-      margin-top: 25px;
-      padding: 12px 25px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .hero .btn:hover {
-      background: var(--sepia);
-    }
-
-    /* Sections */
-    section {
-      padding: 80px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-    section h2 {
-      color: var(--accent);
-      margin-bottom: 15px;
-      font-size: 2rem;
-      text-align: center;
-    }
-    section p {
-      color: var(--muted);
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-      text-align: justify;
-    }
-    .map-embed {
-      margin-top: 20px;
-      aspect-ratio: 16/9;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    }
-    .map-embed iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--sepia);
-      color: white;
-      margin-top: 40px;
-    }
-  </style>
+  <title>Mapa Araguaia - Sobre</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <nav>
-      <div class="logo"><strong>Mapa Araguaia</strong></div>
-      <ul>
-        <li><a href="#sobre">Sobre o mapa</a></li>
-        <li><a href="#contexto">Contexto histórico</a></li>
-        <li><a href="#autoria">Autoria e créditos</a></li>
-        <li><a href="#uso">Como usar</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <div class="logo"><strong>Mapa Araguaia</strong></div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Sobre o mapa</a></li>
+      <li><a href="contexto.html">Contexto histórico</a></li>
+      <li><a href="autoria.html">Autoria</a></li>
+      <li><a href="uso.html">Como usar</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1>Mapa Interativo da Guerrilha do Araguaia</h1>
-    <p>
-      Produto do trabalho de mestrado de <strong>Jorge Kitchell Pinheiro Lima</strong>, 
-      no Programa de Mestrado Profissional em Ensino de História (PROFHISTÓRIA).
-    </p>
-    <a href="#sobre"><button class="btn">Explorar o mapa</button></a>
-  </section>
-
-  <!-- Sobre o mapa -->
-  <section id="sobre">
-    <h2>🗺️ Sobre o mapa</h2>
-    <p>
-      Este mapa interativo é produto do trabalho 
-      <em><strong>"Ensino de História e as memórias da Guerrilha do Araguaia: percepções de alunos e professores da Escola Estadual Professor Lício Solheiro (Brejo Grande do Araguaia - PA)"</strong></em>.
-    </p>
-    <div class="map-embed">
-      <!-- Substitua o src abaixo pelo link do seu mapa interativo -->
-      <iframe src="https://leafletjs.com/examples/quick-start/" loading="lazy"></iframe>
-    </div>
-  </section>
-
-  <!-- Contexto histórico -->
-  <section id="contexto">
-    <h2>📜 Contexto histórico</h2>
-    <p>
-      A Guerrilha do Araguaia foi um movimento de resistência armado organizado pelo Partido Comunista do Brasil (PCdoB) 
-      na região amazônica durante a ditadura militar brasileira, entre o final dos anos 1960 e meados dos anos 1970. 
-      Este episódio marcou profundamente a memória coletiva da região e permanece como um dos capítulos mais silenciados da história nacional.
-    </p>
-  </section>
-
-  <!-- Autoria e créditos -->
-  <section id="autoria">
-    <h2>🎓 Autoria e créditos</h2>
-    <p>
-      <strong>Autor do trabalho:</strong> Jorge Kitchell Pinheiro Lima (PROFHISTÓRIA). <br>
-      <strong>Desenvolvimento do site:</strong> [Seu Nome].
-    </p>
-  </section>
-
-  <!-- Como usar -->
-  <section id="uso">
-    <h2>🗺️ Como usar</h2>
-    <p>
-      Utilize os botões de zoom e arraste o mapa para navegar pela região. Clique nos pontos marcados 
-      para visualizar informações adicionais, documentos e registros sobre a Guerrilha do Araguaia.
-    </p>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; <span id="ano"></span> Mapa Interativo da Guerrilha do Araguaia</p>
-  </footer>
-
-  <script>
-    // Atualiza o ano automaticamente no footer
-    document.getElementById("ano").textContent = new Date().getFullYear();
-  </script>
+<section class="section">
+  <h1>Sobre o mapa</h1>
+  <p>
+    Este mapa interativo é produto do trabalho 
+    <em><strong>“Ensino de História e as memórias da Guerrilha do Araguaia: percepções de alunos e professores da Escola Estadual Professor Lício Solheiro (Brejo Grande do Araguaia - PA)”</strong></em>, 
+    realizado por Jorge Kitchell Pinheiro Lima no PROFHISTÓRIA.
+  </p>
+  <div style="margin-top:20px; aspect-ratio:16/9; background:#ccc; border:3px solid var(--preto);">
+    <!-- Aqui entra o iframe do mapa -->
+  </div>
+</section>
 
 </body>
 </html>
