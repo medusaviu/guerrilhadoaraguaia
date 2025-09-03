@@ -1,91 +1,414 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { Book, Gamepad2, Users, Image as ImageIcon } from "lucide-react";
-
-export default function SemiAridoGameSite() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-100 via-orange-50 to-amber-100 text-gray-800">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center py-20 px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-6xl font-bold text-amber-800"
-        >
-          Jogo Educativo do Semiárido
-        </motion.h1>
-        <p className="mt-4 max-w-2xl text-lg text-gray-700">
-          Um jogo sobre mudanças climáticas e tecnologias de convivência no Semiárido brasileiro.
-        </p>
-        <div className="mt-6 flex gap-4">
-          <Button className="rounded-2xl bg-amber-700 text-white px-6 py-3 text-lg shadow-md hover:bg-amber-800">
-            Jogar Agora
-          </Button>
-          <Button variant="outline" className="rounded-2xl border-amber-700 text-amber-700 px-6 py-3 text-lg">
-            Saiba Mais
-          </Button>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafios Climáticos no Semiárido - Jogo de Tabuleiro Educativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #2E86AB;
+            --color-secondary: #A23B72;
+            --color-accent: #F18F01;
+            --color-light: #F6F5AE;
+            --color-dark: #2B2D42;
+            --color-arido: #C97D3A;
+            --color-vegetacao: #7AA86B;
+            --color-agricultura: #8DB580;
+            --color-comunidade: #D5896F;
+            --color-politica: #9C528B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            background-image: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        h2 {
+            color: var(--color-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--color-accent);
+            display: inline-block;
+        }
+        
+        h3 {
+            color: var(--color-primary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .game-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        .characters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .character-card {
+            background: linear-gradient(145deg, #ffffff, #f1f3f5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--color-primary);
+        }
+        
+        .character-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .character-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+        
+        .agricultor {
+            border-top-color: var(--color-agricultura);
+        }
+        
+        .geografo {
+            border-top-color: var(--color-vegetacao);
+        }
+        
+        .quilombola {
+            border-top-color: var(--color-comunidade);
+        }
+        
+        .politico {
+            border-top-color: var(--color-politica);
+        }
+        
+        .game-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .game-element {
+            padding: 1.5rem;
+            border-left: 4px solid var(--color-accent);
+            background-color: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .bncc-skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .bncc-card {
+            background: linear-gradient(145deg, #ffffff, #f1f3f5);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--color-secondary);
+        }
+        
+        .bncc-card h4 {
+            color: var(--color-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 220px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: var(--color-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-dark);
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(to right, var(--color-accent), #e57f00);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 1.2rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(241, 143, 1, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(241, 143, 1, 0.4);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--color-dark), #1a1c2d);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--color-accent);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .characters, .game-elements, .bncc-skills {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Desafios Climáticos no Semiárido</h1>
+            <p>Um jogo de tabuleiro educativo sobre mudanças climáticas e sustentabilidade no semiárido brasileiro</p>
         </div>
-      </section>
+    </header>
 
-      {/* Features Section */}
-      <section className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto px-6 py-16">
-        <Card className="rounded-2xl shadow-md">
-          <CardContent className="flex flex-col items-center p-6">
-            <Gamepad2 className="h-12 w-12 text-amber-700 mb-4" />
-            <h3 className="text-xl font-semibold text-amber-800">Aprender Brincando</h3>
-            <p className="mt-2 text-center text-gray-600">
-              Explore problemáticas socioambientais enquanto joga e descobre soluções para o Semiárido.
-            </p>
-          </CardContent>
-        </Card>
+    <div class="container">
+        <section class="intro">
+            <h2>Sobre o Jogo</h2>
+            <p>O jogo de tabuleiro "Desafios Climáticos no Semiárido" convida os jogadores a mitigar os impactos das mudanças climáticas na região. Com quatro personagens com habilidades únicas, os jogadores devem tomar decisões estratégicas para proteger o meio ambiente e promover o desenvolvimento sustentável.</p>
+            <p>Utilizando habilidades específicas, eles enfrentam eventos climáticos extremos, administram recursos limitados e implementam soluções como reflorestamento e políticas públicas. A vitória depende da capacidade de equilibrar o ecossistema e garantir o bem-estar das comunidades antes que os efeitos climáticos se tornem irreversíveis.</p>
+        </section>
 
-        <Card className="rounded-2xl shadow-md">
-          <CardContent className="flex flex-col items-center p-6">
-            <Book className="h-12 w-12 text-amber-700 mb-4" />
-            <h3 className="text-xl font-semibold text-amber-800">Educação Ambiental</h3>
-            <p className="mt-2 text-center text-gray-600">
-              Um recurso didático inovador para professores e estudantes compreenderem as mudanças climáticas.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-2xl shadow-md">
-          <CardContent className="flex flex-col items-center p-6">
-            <Users className="h-12 w-12 text-amber-700 mb-4" />
-            <h3 className="text-xl font-semibold text-amber-800">Convivência Coletiva</h3>
-            <p className="mt-2 text-center text-gray-600">
-              Envolva personagens que representam agricultores, geógrafos e lideranças em busca de soluções.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Gallery Section */}
-      <section className="bg-amber-50 py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-amber-800 text-center mb-8">
-            Galeria
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-2xl bg-gray-200 h-48 flex items-center justify-center">
-              <ImageIcon className="h-10 w-10 text-gray-500" />
+        <section class="game-section">
+            <h2>Personagens do Jogo</h2>
+            <div class="characters">
+                <div class="character-card agricultor">
+                    <div class="character-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Agricultor</h3>
+                    <p>Especializado em técnicas agrícolas sustentáveis, pode plantar e cuidar de culturas adaptadas ao clima. Tem vantagens em ações agrícolas e pode implementar sistemas de irrigação eficientes.</p>
+                </div>
+                
+                <div class="character-card geografo">
+                    <div class="character-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Geógrafo</h3>
+                    <p>Tem conhecimento técnico para identificar áreas de risco de desertificação, mapear recursos hídricos e propor soluções de preservação. Pode fazer análises de território para encontrar as melhores áreas para recuperação ambiental.</p>
+                </div>
+                
+                <div class="character-card quilombola">
+                    <div class="character-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Líder Comunitário Quilombola</h3>
+                    <p>Focado no bem-estar das comunidades, pode mobilizar grupos para projetos de sustentabilidade e tem o poder de gerar ações colaborativas que beneficiem o ecossistema e as pessoas.</p>
+                </div>
+                
+                <div class="character-card politico">
+                    <div class="character-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>Líder Político</h3>
+                    <p>Pode aprovar políticas públicas e direcionar recursos para projetos de infraestrutura sustentável. Tem a habilidade de aprovar leis que protegem os recursos naturais e promovem desenvolvimento sustentável.</p>
+                </div>
             </div>
-            <div className="rounded-2xl bg-gray-200 h-48 flex items-center justify-center">
-              <ImageIcon className="h-10 w-10 text-gray-500" />
-            </div>
-            <div className="rounded-2xl bg-gray-200 h-48 flex items-center justify-center">
-              <ImageIcon className="h-10 w-10 text-gray-500" />
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="bg-amber-800 text-white py-8 mt-16 text-center">
-        <p className="text-sm">© 2025 Jogo do Semiárido | Desenvolvido por Jenifer Silva</p>
-      </footer>
+        <section class="game-section">
+            <h2>Mecânica do Jogo</h2>
+            <div class="game-elements">
+                <div class="game-element">
+                    <h3><i class="fas fa-chess-board"></i> Tabuleiro</h3>
+                    <p>Dividido em regiões com diferentes desafios (ex.: áreas de desertificação, falta de água, comunidades vulneráveis).</p>
+                </div>
+                
+                <div class="game-element">
+                    <h3><i class="fas fa-clone"></i> Cartas de Evento</h3>
+                    <p>Sorteadas no início de cada rodada, representam eventos climáticos extremos, como seca ou tempestades, que os jogadores precisam mitigar.</p>
+                </div>
+                
+                <div class="game-element">
+                    <h3><i class="fas fa-tasks"></i> Cartas de Ação</h3>
+                    <p>Os jogadores podem usar cartas de ação para desenvolver projetos sustentáveis, como construção de cisternas, reflorestamento, criação de cooperativas agrícolas, ou campanhas de conscientização.</p>
+                </div>
+                
+                <div class="game-element">
+                    <h3><i class="fas fa-tint"></i> Sistema de Recursos</h3>
+                    <p>Os jogadores precisam administrar recursos limitados (água, energia, apoio comunitário) para realizar suas ações.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-section">
+            <h2>Objetivo Educacional</h2>
+            <p>Proporcionar uma experiência educativa que permita aos alunos compreender de maneira prática e dinâmica as complexas relações entre as mudanças climáticas, a sustentabilidade ambiental e a ocupação territorial no semiárido brasileiro.</p>
+            <p>O jogo estimula o desenvolvimento de habilidades cognitivas e socioemocionais, como pensamento crítico, resolução de problemas, cooperação e tomada de decisões conscientes.</p>
+        </section>
+
+        <section class="game-section">
+            <h2>Alinhamento com a BNCC</h2>
+            <div class="bncc-skills">
+                <div class="bncc-card">
+                    <h4>Ciências (Ensino Fundamental)</h4>
+                    <ul>
+                        <li>Explicar a importância da biodiversidade e sua relação com o equilíbrio dos ecossistemas</li>
+                        <li>Analisar os impactos ambientais causados pelo ser humano e propor soluções para a sustentabilidade</li>
+                        <li>Investigar as mudanças climáticas e discutir ações para mitigar seus efeitos</li>
+                    </ul>
+                </div>
+                
+                <div class="bncc-card">
+                    <h4>Geografia (Ensino Fundamental)</h4>
+                    <ul>
+                        <li>Analisar as transformações causadas no espaço geográfico em função das ações humanas e naturais</li>
+                        <li>Identificar problemas ambientais, como desertificação, e propor ações de preservação e recuperação</li>
+                        <li>Avaliar políticas públicas e iniciativas comunitárias voltadas à sustentabilidade</li>
+                    </ul>
+                </div>
+                
+                <div class="bncc-card">
+                    <h4>Ensino Médio (Interdisciplinaridade)</h4>
+                    <ul>
+                        <li>Compreender a relação entre processos naturais e sociais para propor soluções sustentáveis</li>
+                        <li>Analisar a importância das políticas públicas na mitigação de problemas ambientais e sociais</li>
+                        <li>Reconhecer a relevância do engajamento das comunidades locais na promoção de práticas sustentáveis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-section">
+            <h2>Componentes do Jogo</h2>
+            <div class="gallery">
+                <div class="gallery-item">Tabuleiro com regiões do semiárido</div>
+                <div class="gallery-item">Cartas de evento climático</div>
+                <div class="gallery-item">Cartas de ação sustentável</div>
+                <div class="gallery-item">Fichas de recursos (água, energia)</div>
+                <div class="gallery-item">Peões dos personagens</div>
+                <div class="gallery-item">Manual de instruções</div>
+            </div>
+        </section>
+
+        <section class="game-section" style="text-align: center;">
+            <h2>Interessado em Conhecer Mais?</h2>
+            <p>Entre em contato para saber mais sobre o jogo, agendar uma demonstração ou discutir possibilidades de colaboração.</p>
+            <a href="#contact" class="cta-button">Entrar em Contato</a>
+        </section>
+
+        <section id="contact">
+            <h2>Contato</h2>
+            <p>Email: contato@desafiosclimaticos.com</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </section>
     </div>
-  );
-}
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Desafios Climáticos no Semiárido. Todos os direitos reservados.</p>
+            <p>Jogo educativo desenvolvido para conscientização sobre mudanças climáticas no semiárido brasileiro.</p>
+        </div>
+    </footer>
+</body>
+</html>
