@@ -1,706 +1,312 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerrilha do Araguaia - Memorial Histórico da CNV</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            line-height: 1.8;
-            color: #333;
-            background-color: #f8f9fa;
-        }
-
-        /* Pop-up inicial */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .popup-content {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-            padding: 40px;
-            border-radius: 15px;
-            max-width: 900px;
-            max-height: 85vh;
-            overflow-y: auto;
-            margin: 20px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid #ccc;
-        }
-
-        .close-popup {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: #8b0000;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-
-        .close-popup:hover {
-            background: #660000;
-        }
-
-        .cnv-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #8b0000;
-        }
-
-        .cnv-header h2 {
-            color: #8b0000;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .cnv-header .subtitle {
-            color: #555;
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ecf0f1;
-        }
-
-        .nav-links a {
-            color: #ecf0f1;
-            text-decoration: none;
-            margin-left: 25px;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: #3498db;
-        }
-
-        /* Container principal */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Seção hero */
-        .hero {
-            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Controles do mapa */
-        .map-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid #8b0000;
-        }
-
-        .fullscreen-btn {
-            background: #8b0000;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.3s;
-            font-weight: bold;
-        }
-
-        .fullscreen-btn:hover {
-            background: #660000;
-        }
-
-        /* Container do mapa */
-        .map-container {
-            position: relative;
-            margin: 2rem 0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            border: 1px solid #ddd;
-        }
-
-        #map {
-            height: 700px;
-            width: 100%;
-            background: #e8f4f8;
-        }
-
-        /* Conteúdo histórico */
-        .conteudo-historia {
-            background: white;
-            padding: 4rem;
-            margin: 3rem 0;
-            border-radius: 10px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .conteudo-historia h2 {
-            color: #2c3e50;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
-            border-bottom: 3px solid #8b0000;
-            padding-bottom: 10px;
-        }
-
-        .conteudo-historia h3 {
-            color: #8b0000;
-            margin: 2rem 0 1rem;
-            font-size: 1.8rem;
-        }
-
-        .conteudo-historia p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            text-align: justify;
-        }
-
-        .destaque {
-            background: #f8f9fa;
-            border-left: 4px solid #8b0000;
-            padding: 20px;
-            margin: 25px 0;
-            font-style: italic;
-        }
-
-        .lista-vitimas {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-
-        .lista-vitimas h4 {
-            color: #8b0000;
-            margin-bottom: 15px;
-        }
-
-        .grid-vitimas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-
-        /* Footer */
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 3rem 0;
-            margin-top: 4rem;
-        }
-
-        .fonte-cnv {
-            background: #8b0000;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 20px 0;
-            font-size: 0.9rem;
-        }
-
-        /* Modo tela cheia */
-        .fullscreen-mode {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 999;
-            background: white;
-        }
-
-        .fullscreen-mode .map-container {
-            margin: 0;
-            border-radius: 0;
-            height: 100vh;
-            box-shadow: none;
-        }
-
-        .fullscreen-mode #map {
-            height: 100vh;
-        }
-
-        .exit-fullscreen {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #8b0000;
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1000;
-            font-weight: bold;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .nav-links {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .nav-links a {
-                margin-left: 0;
-            }
-            
-            .map-controls {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-            
-            .conteudo-historia {
-                padding: 2rem;
-            }
-            
-            .popup-content {
-                padding: 25px;
-                margin: 10px;
-            }
-        }
-    </style>
-    
-    <!-- CSS do Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mapa Interativo — Guerrilha do Araguaia</title>
+  <meta name="description" content="Landing page do Mapa Interativo da Guerrilha do Araguaia — produto do Mestrado Profissional em Ensino de História (PROFHISTÓRIA)." />
+  <style>
+    /* ---------- Reset / base ---------- */
+    :root{
+      --bg:#faf7f2;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#b45309; /* amber-700 */
+      --accent-2:#065f46; /* green-800 */
+      --accent-3:#7c3aed; /* violet */
+      --text:#0f172a;
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text);background:linear-gradient(180deg,#fbfaf9 0%, #f3efe9 100%);}
+    a{color:var(--accent-2);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;z-index:40;background:rgba(11,22,34,0.02);backdrop-filter: blur(4px);border-bottom:1px solid rgba(15,23,42,0.04)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-placeholder{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--accent) 0%, var(--accent-2) 100%);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav a{margin-left:14px;font-size:0.95rem;color:var(--muted)}
+    nav a.active{color:var(--accent-2);font-weight:600}
+    .hero{padding:46px 0 32px}
+    .eyebrow{display:inline-block;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(7,89,77,0.08), rgba(180,83,9,0.06));color:var(--accent-2);font-weight:600;font-size:0.85rem}
+    h1{font-size:clamp(28px, 4.2vw, 44px);margin:18px 0 8px;line-height:1.03}
+    .lead{color:var(--muted);max-width:80ch;font-size:1.05rem}
+    .hero-cta{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;border:1px solid rgba(15,23,42,0.06);background:white;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-2), #047857);color:#fff;border:none}
+    .btn-ghost{background:transparent}
+    /* ---------- sections ---------- */
+    section{padding:56px 0;border-top:1px solid rgba(15,23,42,0.03)}
+    .grid{display:grid;gap:20px}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:900px){.grid.cols-2{grid-template-columns:1fr}}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,0.04);border:1px solid rgba(15,23,42,0.03)}
+    .kicker{font-size:0.78rem;color:var(--accent-2);letter-spacing:0.06em;text-transform:uppercase;font-weight:700}
+    .muted{color:var(--muted)}
+    /* ---------- mapa container ---------- */
+    .map-frame{border-radius:12px;overflow:hidden;border:1px solid rgba(15,23,42,0.06);height:560px;background:linear-gradient(180deg,#f3f6f4,#eef6f2)}
+    .map-embed{width:100%;height:100%;border:0}
+    .map-placeholder{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;color:var(--muted);padding:24px;text-align:center}
+    .logo-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .logo-box{width:140px;height:56px;border-radius:10px;border:2px dashed rgba(15,23,42,0.06);display:flex;align-items:center;justify-content:center;color:var(--muted);background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.3))}
+    /* timeline */
+    .timeline{position:relative;padding:20px 0}
+    .timeline-line{position:absolute;left:50%;top:0;transform:translateX(-50%);width:4px;background:linear-gradient(180deg,var(--accent-2),var(--accent));border-radius:999px;min-height:100%}
+    .tl-item{display:flex;gap:18px;align-items:center;padding:18px 12px}
+    .tl-item .dot{width:20px;height:20px;border-radius:999px;background:var(--accent-2);border:4px solid white;box-shadow:0 6px 18px rgba(7,89,77,0.12)}
+    @media (max-width:900px){.timeline-line{left:14px;transform:none}.tl-item{flex-direction:row;align-items:flex-start}}
+    /* footer */
+    footer{padding:30px 0;background:linear-gradient(180deg,#052e1f 0%, #073a2b 100%);color:white}
+    footer .col{max-width:380px}
+    /* small interactions */
+    .fade-in{opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    .fade-in.in{opacity:1;transform:none}
+    .small{font-size:0.92rem;color:var(--muted)}
+    .center{text-align:center}
+    code{background:#0f172a;color:#fff;padding:4px 6px;border-radius:6px;font-size:0.88rem}
+  </style>
 </head>
 <body>
-    <!-- Pop-up inicial com conteúdo da CNV -->
-    <div id="popupInicial" class="popup-overlay">
-        <div class="popup-content">
-            <button class="close-popup" onclick="fecharPopup()">× Fechar</button>
-            
-            <div class="cnv-header">
-                <h2>COMISSÃO NACIONAL DA VERDADE</h2>
-                <p class="subtitle">Relatório Final - Volume I - Capítulo 14</p>
-                <h3>GUERRILHA DO ARAGUAIA</h3>
-            </div>
-
-            <div style="line-height: 1.8;">
-                <p><strong>Segundo o Relatório da Comissão Nacional da Verdade (2014):</strong></p>
-                
-                <div class="destaque">
-                    <p>"A Guerrilha do Araguaia foi um dos episódios mais dramáticos da resistência à ditadura militar no Brasil. Entre 1972 e 1974, nas margens do Rio Araguaia, dezenas de militantes do Partido Comunista do Brasil (PCdoB) foram perseguidos, torturados e executados pelas Forças Armadas."</p>
-                </div>
-
-                <h4>PRINCIPAIS CONCLUSÕES DA CNV:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 25px;">
-                    <li><strong>69 militantes</strong> foram para a região do Araguaia</li>
-                    <li><strong>56 guerrilheiros mortos</strong> (cujos corpos ainda se encontram desaparecidos)</li>
-                    <li><strong>Execuções sumárias</strong> e ocultação sistemática de cadáveres</li>
-                    <li><strong>Tortura como método sistemático</strong> de interrogatório</li>
-                    <li>Envolvimento de <strong>todas as Forças Armadas</strong> na repressão</li>
-                    <li><strong>Mais de 200 camponeses presos</strong> sob acusação de apoio à guerrilha</li>
-                    <li>Violência contra <strong>populações indígenas</strong> da região (Aikewara)</li>
-                </ul>
-
-                <h4>OPERACÕES MILITARES DOCUMENTADAS:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 25px;">
-                    <li>Operação Carajás (1970)</li>
-                    <li>Operação Mesopotâmia (1971)</li>
-                    <li>Primeira Campanha (Abril-Junho 1972)</li>
-                    <li>Operação Papagaio (Setembro 1972)</li>
-                    <li>Operação Sucuri (Maio-Outubro 1973)</li>
-                    <li>Operação Marajoara (Outubro 1973-1974)</li>
-                </ul>
-
-                <div class="fonte-cnv">
-                    <strong>Fonte:</strong> BRASIL. Comissão Nacional da Verdade. <em>Relatório Final</em>. Brasília: CNV, 2014. Volume I, Capítulo 14, pp. 679-725.
-                </div>
-
-                <p style="text-align: center; margin-top: 30px; font-style: italic; color: #666;">
-                    "Este mapa busca reconstituir a geografia do conflito, honrando a memória daqueles que lutaram pela democracia e pelo direito à verdade."
-                </p>
-            </div>
+  <header>
+    <div class="container nav" role="banner">
+      <div class="brand" aria-hidden="true">
+        <div class="logo-placeholder">GA</div>
+        <div>
+          <div style="font-weight:700">Mapa Interativo — Guerrilha do Araguaia</div>
+          <div class="small muted">Produto do Mestrado Profissional em Ensino de História (PROFHISTÓRIA)</div>
         </div>
+      </div>
+      <nav aria-label="Navegação principal">
+        <a href="#sobre">Sobre o mapa</a>
+        <a href="#contexto">Contexto histórico</a>
+        <a href="#mapa">Mapa Interativo</a>
+        <a href="#como-usar">Como usar</a>
+        <a href="#autoria">Autoria & créditos</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Conteúdo principal -->
-    <div id="conteudoPrincipal" style="display: none;">
-        <header>
-            <nav>
-                <div class="logo">Memorial da Guerrilha do Araguaia</div>
-                <div class="nav-links">
-                    <a href="#mapa">Mapa Interativo</a>
-                    <a href="#cnv">Relatório CNV</a>
-                    <a href="#vitimas">Vítimas</a>
-                    <a href="#sobre">Sobre</a>
-                </div>
-            </nav>
-        </header>
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">Produto de Pesquisa — PROFHISTÓRIA</span>
+        <h1>Mapa Interativo da <span style="color:var(--accent)">Guerrilha do Araguaia</span></h1>
+        <p class="lead">Um recurso didático desenvolvido como produto de pesquisa de Mestrado para apresentar locais, eventos e memórias ligados à Guerrilha do Araguaia. O mapa articula fontes documentais, testemunhos e dados geográficos para uso em contexto escolar e comunitário.</p>
 
-        <section class="hero">
-            <div class="container">
-                <h1>Guerrilha do Araguaia</h1>
-                <p>Memorial digital baseado no Relatório da Comissão Nacional da Verdade</p>
-            </div>
-        </section>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="document.querySelector('#mapa').scrollIntoView({behavior:'smooth'})">Explorar o mapa</button>
+          <button class="btn btn-ghost" onclick="document.querySelector('#sobre').scrollIntoView({behavior:'smooth'})">Saber mais sobre o produto</button>
+        </div>
+      </div>
+    </section>
 
-        <main class="container">
-            <section id="mapa">
-                <div class="map-controls">
-                    <h2>Mapa Interativo da Guerrilha do Araguaia</h2>
-                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
-                        <span>🗔</span> Modo Tela Cheia
-                    </button>
-                </div>
-                
-                <div class="map-container">
-                    <div id="map"></div>
-                </div>
-            </section>
+    <!-- SOBRE O MAPA -->
+    <section id="sobre">
+      <div class="container grid cols-2">
+        <div class="card fade-in" id="about-card">
+          <div class="kicker">Sobre o mapa</div>
+          <h2 style="margin-top:8px">Produto de pesquisa de Mestrado</h2>
+          <p class="muted">
+            Este mapa interativo é fruto da pesquisa de Mestrado Profissional em Ensino de História conduzida por 
+            <strong>Jorge Kitchell Pinheiro Lima</strong> (PROFHISTÓRIA). O produto foi desenvolvido com objetivo pedagógico:
+            aproximar estudantes, professores e comunidade das memórias e dos locais associados à Guerrilha do Araguaia.
+          </p>
 
-            <section id="cnv" class="conteudo-historia">
-                <h2>Relatório da Comissão Nacional da Verdade</h2>
-                
-                <h3>Contexto Histórico</h3>
-                <p>Segundo a CNV, a Guerrilha do Araguaia (1972-1974) foi um movimento de resistência armada contra a ditadura militar organizado pelo Partido Comunista do Brasil (PCdoB) na região amazônica, entre os estados do Pará, Goiás (atual Tocantins) e Maranhão.</p>
-                
-                <div class="destaque">
-                    <p>"Os acontecimentos trágicos do episódio que se tornou conhecido como Guerrilha do Araguaia possuem características que dificultam o estabelecimento de uma versão consolidada dos fatos e o esclarecimento circunstanciado das violações de direitos humanos que ali tiveram lugar." (CNV, p. 679)</p>
-                </div>
+          <h4 style="margin-top:12px">O que o mapa oferece</h4>
+          <ul class="small">
+            <li>Pontos georreferenciados com textos, imagens e vídeos.</li>
+            <li>Camadas temáticas (cidades, locais de conflito, campanhas militares, memoriais).</li>
+            <li>Pop-ups com referências e notas de fonte para consulta.</li>
+          </ul>
 
-                <h3>As Operações Militares</h3>
-                <p>O Exército brasileiro empreendeu três grandes campanhas contra a guerrilha, mobilizando cerca de 10.000 homens contra aproximadamente 69 guerrilheiros. As operações seguiram a <strong>Doutrina da Guerra Revolucionária</strong>, desenvolvida para o combate ao "inimigo interno".</p>
+          <p class="small muted" style="margin-top:12px">
+            Observação: a autoria das informações históricas é do pesquisador e das fontes citadas; a produção técnica e a publicação do web mapa foram realizadas por <strong>Jenifer Silva</strong>.
+          </p>
+        </div>
 
-                <h3>Violações de Direitos Humanos</h3>
-                <p>O Relatório da CNV documenta extensivamente as violações cometidas:</p>
-                <ul style="margin-left: 20px; margin-bottom: 20px;">
-                    <li><strong>Execuções sumárias</strong> de guerrilheiros rendidos</li>
-                    <li><strong>Tortura sistemática</strong> de presos</li>
-                    <li><strong>Desaparecimento forçado</strong> de corpos</li>
-                    <li><strong>Violência contra camponeses</strong> e indígenas</li>
-                    <li><strong>Ocultação de cadáveres</strong> na "Operação Limpeza"</li>
-                </ul>
+        <div class="card fade-in" id="tech-card">
+          <div class="kicker">Tecnologia & publicação</div>
+          <h3 style="margin-top:8px">QGIS → qgis2web → Publicação</h3>
+          <p class="muted">O mapa foi estruturado no QGIS, exportado com o plugin <code>qgis2web</code> (OpenLayers/Leaflet) e preparado para publicação via GitHub Pages. A versão web mantém referências de fonte e incorpora mídia via players oficiais (YouTube/Vimeo).</p>
 
-                <div class="destaque">
-                    <p>"A maior parte dos guerrilheiros do PCdoB na região do Araguaia é considerada desaparecida até o presente momento. [...] o desaparecimento forçado engloba a violação de uma série de direitos, como a vida, a liberdade e a integridade pessoal." (CNV, p. 721)</p>
-                </div>
-            </section>
+          <div style="margin-top:12px" class="small">
+            <strong>Recomendações:</strong>
+            <ul>
+              <li>Fornecer a lista de fontes (livros, relatórios, entrevistas) para exibição nos pop-ups.</li>
+              <li>Evitar inserir vídeos baixados — prefira embeds oficiais.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <section id="vitimas" class="conteudo-historia">
-                <h2>Vítimas e Desaparecidos</h2>
-                
-                <div class="lista-vitimas">
-                    <h4>Segundo a Comissão Especial de Mortos e Desaparecidos Políticos (CEMDP):</h4>
-                    <div class="grid-vitimas">
-                        <div>
-                            <h5>Desaparecidos (63):</h5>
-                            <ul style="font-size: 0.9rem;">
-                                <li>André Grabois (Zé Carlos)</li>
-                                <li>Maurício Grabois</li>
-                                <li>Oswaldo Orlando da Costa (Oswaldão)</li>
-                                <li>Helenira Rezende (Fátima)</li>
-                                <li>João Carlos Haas Sobrinho (Juca)</li>
-                                <li>Entre outros 58 militantes</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h5>Camponeses Vítimas:</h5>
-                            <ul style="font-size: 0.9rem;">
-                                <li>Lourival de Moura Paulino</li>
-                                <li>Antônio Araújo Veloso</li>
-                                <li>Sebastião Vieira da Silva</li>
-                                <li>Juarez Rodrigues Coelho</li>
-                                <li>Sabino Alves da Silva</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+    <!-- CONTEXTO HISTÓRICO -->
+    <section id="contexto">
+      <div class="container">
+        <div class="kicker">Contexto histórico</div>
+        <h2>O que foi a Guerrilha do Araguaia</h2>
+        <p class="muted">Entre o final dos anos 1960 e meados da década de 1970, militantes do Partido Comunista do Brasil (PCdoB) organizaram um movimento de guerrilha na região do Araguaia, na tentativa de articular uma resistência armada contra o regime militar. A repressão das Forças Armadas (1972–1974) resultou em operações militares, mortes, desaparecimentos e severas consequências para as comunidades locais. O tema envolve memória, direitos humanos e justiça.</p>
 
-                <p>O Relatório da CNV destaca que além dos guerrilheiros, <strong>centenas de camponeses</strong> foram presos, torturados e forçados a servir como guias do Exército. A população indígena Aikewara também sofreu violências graves.</p>
-            </section>
-        </main>
+        <div class="grid cols-2" style="margin-top:20px;align-items:start">
+          <div class="card fade-in">
+            <h3>Fatores que impulsionaram o movimento</h3>
+            <ul class="small muted">
+              <li>Contexto de repressão política nacional durante a ditadura militar.</li>
+              <li>Condições socioeconômicas da população rural na região do Bico do Papagaio.</li>
+              <li>Influências de estratégias revolucionárias globais e latino-americanas.</li>
+            </ul>
+          </div>
 
-        <footer>
-            <div class="container">
-                <p><strong>Memorial da Guerrilha do Araguaia</strong></p>
-                <p>Projeto educativo baseado no Relatório da Comissão Nacional da Verdade</p>
-                <div class="fonte-cnv" style="margin: 20px auto; max-width: 600px;">
-                    <strong>Fonte Principal:</strong> BRASIL. Comissão Nacional da Verdade. <em>Relatório Final</em>. Brasília: CNV, 2014. Volume I, Capítulo 14 - "Guerrilha do Araguaia", pp. 679-725.
-                </div>
-                <p style="margin-top: 20px; opacity: 0.8; font-size: 0.9rem;">
-                    "Pela memória, verdade e justiça"
-                </p>
-            </div>
-        </footer>
+          <div class="card fade-in">
+            <h3>Impactos</h3>
+            <ul class="small muted">
+              <li>Mortes e desaparecimentos de militantes e civis.</li>
+              <li>Traumas e deslocamentos em comunidades locais.</li>
+              <li>Processos de memória e busca por justiça nas décadas seguintes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAPA -->
+    <section id="mapa">
+      <div class="container">
+        <div class="kicker">Mapa Interativo</div>
+        <h2>Explore locais, eventos e memórias</h2>
+        <p class="muted">Clique nos pontos para ver textos, imagens, vídeos e referências. Ative camadas conforme interesse.</p>
+
+        <div class="card map-frame" style="margin-top:16px">
+          <!--
+            INSTRUÇÃO:
+            - Se você exportou o qgis2web, coloque a pasta inteira no repositório como /mapa/
+            - Aqui existem duas opções de integração:
+              1) (recomendado) manter o export do qgis2web dentro de /mapa/ e usar o iframe abaixo.
+              2) (avançado) abrir /mapa/index.html e copiar apenas a div #map e os scripts necessários para dentro desse container.
+            - Substitua SEU_LINK_PELO_MAPA se usar hospedagem externa.
+          -->
+          <!-- Opção 1: iframe apontando para a pasta /mapa/index.html -->
+          <iframe class="map-embed" src="mapa/index.html" title="Mapa Interativo da Guerrilha do Araguaia"></iframe>
+
+          <!-- Se preferir placeholder (ex.: antes de subir o mapa), comente o iframe acima e descomente abaixo:
+          <div class="map-placeholder">
+            <strong>Área do mapa</strong>
+            <p class="muted">Coloque aqui via iframe: <code>src="mapa/index.html"</code> ou cole o HTML exportado do qgis2web.</p>
+          </div>
+          -->
+        </div>
+
+        <p class="small muted center" style="margin-top:10px">
+          Abrir o mapa em nova aba:
+          <a href="mapa/index.html" target="_blank" rel="noopener">Abrir mapa em tela cheia</a>
+        </p>
+
+        <!-- Logos / apoios -->
+        <div style="margin-top:18px" class="logo-row">
+          <div class="logo-box">Sua logo</div>
+          <div class="logo-box">PROFHISTÓRIA</div>
+          <div class="logo-box">[Instituição]</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO USAR -->
+    <section id="como-usar">
+      <div class="container">
+        <div class="kicker">Guia rápido</div>
+        <h2>Como usar este mapa em sala de aula</h2>
+        <div class="grid cols-2" style="margin-top:18px">
+          <div class="card fade-in">
+            <h3>Interação</h3>
+            <ul class="small muted">
+              <li>Use zoom e pan para explorar áreas específicas.</li>
+              <li>Clique nos marcadores para abrir pop-ups com textos, imagens e vídeos.</li>
+              <li>Ative/desative camadas (legenda) para comparar informações.</li>
+            </ul>
+          </div>
+          <div class="card fade-in">
+            <h3>Sugestões pedagógicas</h3>
+            <ul class="small muted">
+              <li>Proponha uma trilha de investigação cruzando fontes primárias e pontos do mapa.</li>
+              <li>Faça atividades de análise crítica das fontes citadas em cada pop-up.</li>
+              <li>Estimule alunos a coletarem memórias locais (entrevistas) para futuras camadas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTORIA E CRÉDITOS -->
+    <section id="autoria">
+      <div class="container">
+        <div class="grid cols-2">
+          <div class="card fade-in">
+            <div class="kicker">Autoria da pesquisa</div>
+            <h3>Jorge Kitchell Pinheiro Lima</h3>
+            <p class="muted">Mestrado Profissional em Ensino de História (PROFHISTÓRIA) — autor da pesquisa que originou o mapa.</p>
+          </div>
+
+          <div class="card fade-in">
+            <div class="kicker">Desenvolvimento do webmap</div>
+            <h3>Jenifer Silva</h3>
+            <p class="muted">Produção técnica, curadoria de mídias e publicação web (QGIS + qgis2web; hospedagem via GitHub Pages).</p>
+          </div>
+        </div>
+
+        <div style="margin-top:18px" class="card fade-in">
+          <h4>Fontes principais</h4>
+          <ul class="small muted">
+            <li>Relatórios da Comissão Nacional da Verdade (seção Araguaia).</li>
+            <li>Dissertações, teses e livros acadêmicos sobre o tema.</li>
+            <li>Relatos orais e acervos locais (memoriais e arquivos municipais).</li>
+          </ul>
+
+          <p class="small muted" style="margin-top:10px">
+            Observação: as localizações apresentadas no mapa foram extraídas das fontes acima e de georreferenciamento de mapas históricos quando aplicável. Caso identifique imprecisão, por favor entre em contato para revisão.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+      <div>
+        <h3 style="margin:0 0 8px">Mapa Interativo — Guerrilha do Araguaia</h3>
+        <p class="small">Projeto educacional vinculado ao Mestrado Profissional em Ensino de História (PROFHISTÓRIA).</p>
+        <p class="small" style="margin-top:8px">Contato: <a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></p>
+      </div>
+      <div style="text-align:right">
+        <div class="small muted">© <span id="ano"></span> — Projeto educacional. Todos os direitos reservados.</div>
+      </div>
     </div>
+  </footer>
 
-    <!-- Botão para sair da tela cheia -->
-    <button id="exitFullscreen" class="exit-fullscreen" onclick="toggleFullscreen()" style="display: none;">
-        Sair da Tela Cheia
-    </button>
+  <script>
+    // atualiza ano
+    document.getElementById('ano').textContent = new Date().getFullYear();
 
-    <!-- JavaScript -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // Variáveis globais
-        let map;
-        let isFullscreen = false;
+    // animações de entrada simples
+    function onScrollFade() {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) el.classList.add('in');
+      });
+    }
+    window.addEventListener('scroll', onScrollFade, {passive:true});
+    window.addEventListener('load', onScrollFade);
 
-        // Inicialização quando a página carrega
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mostrar pop-up inicial
-            document.getElementById('popupInicial').style.display = 'flex';
-            
-            // Inicializar mapa
-            inicializarMapa();
-        });
-
-        // Fechar pop-up inicial
-        function fecharPopup() {
-            document.getElementById('popupInicial').style.display = 'none';
-            document.getElementById('conteudoPrincipal').style.display = 'block';
-        }
-
-        // Inicializar o mapa Leaflet com dados da CNV
-        function inicializarMapa() {
-            // Criar mapa centrado na região do Araguaia
-            map = L.map('map').setView([-7.5, -50.0], 8);
-
-            // Adicionar camada base
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            // Adicionar marcadores baseados no Relatório da CNV
-            adicionarMarcadoresCNV();
-        }
-
-        // Função para adicionar marcadores baseados no Relatório da CNV
-        function adicionarMarcadoresCNV() {
-            // Locais importantes mencionados no Relatório da CNV
-            const locaisCNV = [
-                {
-                    coords: [-5.35, -49.12],
-                    titulo: "Marabá (PA)",
-                    descricao: "Base militar principal. Local da 'Casa Azul', centro clandestino de tortura.",
-                    tipo: "militar"
-                },
-                {
-                    coords: [-6.4111, -48.5322],
-                    titulo: "Xambioá (TO)",
-                    descricao: "Base militar importante. Local de prisões e torturas.",
-                    tipo: "militar"
-                },
-                {
-                    coords: [-7.5, -50.0],
-                    titulo: "Área do Conflito",
-                    descricao: "Região principal de atuação da guerrilha (6.500 km²).",
-                    tipo: "guerrilha"
-                },
-                {
-                    coords: [-8.25, -49.25],
-                    titulo: "Serra das Andorinhas",
-                    descricao: "Local de bases guerrilheiras. Área onde foi usado napalm.",
-                    tipo: "guerrilha"
-                },
-                {
-                    coords: [-7.0, -50.5],
-                    titulo: "São Geraldo do Araguaia",
-                    descricao: "Área de atuação do destacamento B da guerrilha.",
-                    tipo: "guerrilha"
-                },
-                {
-                    coords: [-6.8, -48.9],
-                    titulo: "Bacaba",
-                    descricao: "Base militar e centro de torturas.",
-                    tipo: "militar"
-                }
-            ];
-
-            // Ícones diferentes para guerrilha e forças militares
-            const iconGuerrilha = L.icon({
-                iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="10" cy="10" r="8" fill="red" stroke="white" stroke-width="2"/>
-                    </svg>
-                `),
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
-            const iconMilitar = L.icon({
-                iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="10" cy="10" r="8" fill="blue" stroke="white" stroke-width="2"/>
-                    </svg>
-                `),
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
-            // Adicionar marcadores
-            locaisCNV.forEach(local => {
-                const icon = local.tipo === "guerrilha" ? iconGuerrilha : iconMilitar;
-                
-                L.marker(local.coords, {icon: icon})
-                    .addTo(map)
-                    .bindPopup(`
-                        <h3>${local.titulo}</h3>
-                        <p><strong>${local.tipo === "guerrilha" ? "Área Guerrilheira" : "Base Militar"}</strong></p>
-                        <p>${local.descricao}</p>
-                        <small>Fonte: Relatório CNV, 2014</small>
-                    `);
-            });
-
-            // Adicionar polígono da área aproximada do conflito
-            L.polygon([
-                [-7.0, -49.5],
-                [-8.0, -49.5],
-                [-8.0, -50.5],
-                [-7.0, -50.5]
-            ], {
-                color: 'red',
-                fillColor: '#ff0000',
-                fillOpacity: 0.1,
-                weight: 2
-            }).addTo(map).bindPopup(`
-                <h3>Área da Guerrilha do Araguaia</h3>
-                <p><strong>6.500 km² de atuação guerrilheira</strong></p>
-                <p>Região onde ocorreram os principais combates entre 1972-1974</p>
-                <small>Fonte: Relatório CNV, p. 714</small>
-            `);
-
-            // Adicionar linha da Transamazônica (mencionada no relatório)
-            L.polyline([
-                [-5.0, -49.0],
-                [-8.0, -50.0]
-            ], {
-                color: 'orange',
-                weight: 3,
-                dashArray: '5, 5'
-            }).addTo(map).bindPopup('Rodovia Transamazônica - Local de operações militares');
-        }
-
-        // Alternar modo tela cheia
-        function toggleFullscreen() {
-            const mapContainer = document.querySelector('.map-container');
-            const exitBtn = document.getElementById('exitFullscreen');
-            
-            if (!isFullscreen) {
-                // Entrar em tela cheia
-                mapContainer.classList.add('fullscreen-mode');
-                exitBtn.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-                isFullscreen = true;
-                
-                // Atualizar tamanho do mapa
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 300);
-            } else {
-                // Sair da tela cheia
-                mapContainer.classList.remove('fullscreen-mode');
-                exitBtn.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                isFullscreen = false;
-                
-                // Atualizar tamanho do mapa
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 300);
-            }
-        }
-
-        // Fechar pop-up com ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (isFullscreen) {
-                    toggleFullscreen();
-                } else if (document.getElementById('popupInicial').style.display === 'flex') {
-                    fecharPopup();
-                }
-            }
-        });
-
-        // Rolagem suave para âncoras
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+    // acessibilidade: smooth focus for nav anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const id = this.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+      });
+    });
+  </script>
 </body>
 </html>
