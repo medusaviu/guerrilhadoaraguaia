@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerrilha do Araguaia - Jenifer Silva</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <title>WebMapa - Visualização de Dados em Mapas</title>
     <style>
+        /* Reset e estilos base */
         * {
             margin: 0;
             padding: 0;
@@ -14,507 +14,378 @@
         }
         
         body {
-            background-color: #f8f5f0;
+            background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
         }
         
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Cabeçalho */
         header {
-            background: linear-gradient(135deg, #8B0000 0%, #B22222 100%);
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
         .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            font-weight: normal;
-        }
-        
-        .author {
-            margin-top: 1rem;
-            font-style: italic;
-            font-size: 1rem;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-        
-        /* Estilo das abas */
-        .tabs {
             display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .tab {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            border: none;
-            background-color: #e9e1d2;
-            flex-grow: 1;
-            text-align: center;
-        }
-        
-        .tab:hover {
-            background-color: #d6c9b1;
-        }
-        
-        .tab.active {
-            background-color: #8B4513; /* Marrom histórico */
-            color: white;
-        }
-        
-        .tab:nth-child(2).active {
-            background-color: #556B2F; /* Verde histórico */
-        }
-        
-        .tab:nth-child(3).active {
-            background-color: #8B0000; /* Vermelho histórico */
-        }
-        
-        .tab:nth-child(4).active {
-            background-color: #483D8B; /* Azul histórico */
-        }
-        
-        .tab:nth-child(5).active {
-            background-color: #5D3954; /* Roxo histórico */
-        }
-        
-        /* Conteúdo das abas */
-        .tab-content {
-            display: none;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Estilo do mapa */
-        #map-container {
-            height: 600px;
-            margin: 1rem 0;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-        
-        /* Estilo do conteúdo */
-        .content-section {
-            margin-bottom: 2rem;
-        }
-        
-        .content-section h2 {
-            color: #8B0000;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #8B4513;
-            padding-bottom: 0.5rem;
-        }
-        
-        .content-section h3 {
-            color: #556B2F;
-            margin: 1.5rem 0 0.8rem 0;
-        }
-        
-        .content-section p {
-            margin-bottom: 1rem;
-            text-align: justify;
-        }
-        
-        .content-section ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .content-section blockquote {
-            border-left: 4px solid #8B4513;
-            padding-left: 1rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: #555;
-        }
-        
-        .image-placeholder {
-            background-color: #e9e1d2;
-            height: 200px;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            margin: 1.5rem 0;
-            border-radius: 5px;
-            font-style: italic;
-            color: #777;
-        }
-        
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .credits {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        
-        .logo-section {
-            background-color: #f8f5f0;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        
-        .logo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-        
-        .logo-title {
-            color: #8B0000;
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
+            padding: 20px 0;
         }
         
         .logo {
-            height: 80px;
-            width: auto;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .logo span {
+            color: #3498db;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #3498db;
+        }
+        
+        /* Seção Hero */
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Seção de recursos */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
             background-color: white;
-            padding: 0.5rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        /* Seção de demonstração */
+        .demo {
+            background-color: #2c3e50;
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .demo-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .demo-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 30px;
+        }
+        
+        .demo-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .demo-visual {
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.2rem;
         }
         
-        .logo-placeholder {
-            width: 160px;
-            height: 80px;
-            background-color: #e9e1d2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-style: italic;
-            border-radius: 5px;
+        /* Rodapé */
+        footer {
+            background-color: #1a2530;
+            color: #ecf0f1;
+            padding: 50px 0 20px;
         }
         
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #3498db;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsividade */
         @media (max-width: 768px) {
-            .tab {
-                flex-basis: 50%;
-            }
-            
-            #map-container {
-                height: 400px;
-            }
-            
-            .logos {
-                gap: 1rem;
-            }
-            
-            .logo, .logo-placeholder {
-                height: 60px;
-                width: 120px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .tab {
-                flex-basis: 100%;
-            }
-            
-            #map-container {
-                height: 300px;
-            }
-            
-            .logos {
+            .header-content {
                 flex-direction: column;
-                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .demo-content {
+                flex-direction: column;
+            }
+            
+            .demo-text {
+                padding-right: 0;
+                margin-bottom: 30px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Cabeçalho -->
     <header>
-        <div class="header-content">
-            <h1>Guerrilha do Araguaia: Memória, Mapa e Resistência</h1>
-            <p class="subtitle">Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
-            <p class="author">Site e curadoria: Jenifer Silva | 2025</p>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Web<span>Mapa</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#">HOME</a></li>
+                        <li><a href="#">PURVES</a></li>
+                        <li><a href="#">BLOCKS</a></li>
+                        <li><a href="#">ABOUT</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
-    
-    <div class="container">
-        <div class="tabs">
-            <button class="tab active" onclick="openTab('contexto')">Contexto Histórico</button>
-            <button class="tab" onclick="openTab('mapa')">Mapa Interativo</button>
-            <button class="tab" onclick="openTab('conflito')">O Conflito</button>
-            <button class="tab" onclick="openTab('memoria')">Memória e Verdade</button>
-            <button class="tab" onclick="openTab('referencias')">Referências</button>
-        </div>
-        
-        <div id="contexto" class="tab-content active">
-            <h2>Contexto Histórico da Guerrilha do Araguaia</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Brasil durante a Ditadura Militar]
-            </div>
-            
-            <p>A Guerrilha do Araguaia (1972-1974) ocorreu durante o período mais repressivo da Ditadura Militar brasileira (1964-1985), inserindo-se no contexto da Guerra Fria e das lutas por libertação nacional no Terceiro Mundo.</p>
-            
-            <h3>Antecedentes Políticos</h3>
-            <p>O golpe militar de 1964 instaurou um regime autoritário que suprimiu direitos civis, dissolveu partidos políticos e implementou a censura prévia. A resistência ao regime assumiu diversas formas, desde a atuação parlamentar até a luta armada.</p>
-            
-            <h3>O PCdoB e a Opção pela Luta Armada</h3>
-            <p>O Partido Comunista do Brasil (PCdoB), fundado em 1962 após cisão com o PCB, defendia a Revolução Socialista como caminho para transformar a sociedade brasileira. Inspirado pela Revolução Cubana e pelas experiências de libertação nacional, o partido optou pela estratégia de guerrilha rural como forma de resistência ao regime militar.</p>
-            
-            <blockquote>
-                "A guerrilha representava a convicção de que era possível repetir no Brasil a experiência bem-sucedida de Cuba e China, adaptando-a às particularidades nacionais."
-            </blockquote>
-            
-            <h3>A Escolha da Região do Araguaia</h3>
-            <p>A bacia do Rio Araguaia, na divisa dos estados do Pará, Maranhão e Goiás (atual Tocantins), foi escolhida por sua localização estratégica, distante dos grandes centros urbanos, com difícil acesso e presença do Estado limitada, fatores considerados ideais para o estabelecimento de um foco guerrilheiro.</p>
-        </div>
-        
-        <div id="mapa" class="tab-content">
-            <h2>Mapa da Região da Guerrilha do Araguaia</h2>
-            <p>Este mapa interativo apresenta a região do conflito, com destaque para os locais significativos relacionados à Guerrilha do Araguaia. A curadoria e elaboração cartográfica é de Jenifer Silva (2025), utilizando QGIS e qgis2web.</p>
-            
-            <div id="map-container">
-                <div id="map"></div>
-            </div>
-            
-            <div class="content-section">
-                <h3>Como interpretar o mapa</h3>
-                <p>Os marcadores em vermelho indicam os principais locais de confronto. As linhas representam rotas utilizadas pelos guerrilheiros e pelas forças militares. As áreas sombreadas mostram a extensão aproximada da atuação da guerrilha.</p>
-                
-                <h3>Metodologia de Elaboração</h3>
-                <p>O mapa foi desenvolvido a partir de pesquisa bibliográfica, registros históricos e georreferenciamento de locais mencionados em relatos e documentos sobre a Guerrilha do Araguaia. A base cartográfica foi tratada no QGIS com posterior exportação via qgis2web.</p>
-            </div>
-        </div>
-        
-        <div id="conflito" class="tab-content">
-            <h2>O Conflito Armado</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Região do Araguaia na época do conflito]
-            </div>
-            
-            <h3>Primeira Fase (1972)</h3>
-            <p>Os primeiros confrontos ocorreram em abril de 1972, quando as Forças Armadas detectaram a presença guerrilheira na região. Inicialmente, o Exército subestimou a dimensão do movimento, enviando pequenas tropas que foram surpreendidas pelo conhecimento territorial dos guerrilheiros.</p>
-            
-            <h3>Segunda Fase (1973)</h3>
-            <p>Em 1973, o Exército mobilizou efetivo maior, entre 3.000 a 5.000 soldados, utilizando helicópteros, aviões e métodos de guerra não convencional. Os militares implementaram a estratégia de "cerca viva", isolando a região e pressionando a população local para obter informações.</p>
-            
-            <h3>Terceira Fase (1974)</h3>
-            <p>Em 1974, com efetivo ampliado para cerca de 10.000 soldados, as operações militares se intensificaram. Os guerrilheiros, isolados e sem apoio externo, foram progressivamente dizimados. Muitos foram capturados, torturados e executados, seus corpos nunca foram localizados.</p>
-            
-            <h3>O Papel da População Local</h3>
-            <p>Os camponeses da região foram peças-chave no conflito, ora apoiando os guerrilheiros, ora sendo coagidos pelas forças militares. Muitos sofreram violências, deslocamentos forçados e perseguições tanto durante quanto após o conflito.</p>
-            
-            <blockquote>
-                "A população local ficou no meio fogo cruzado, sofrendo as consequências de um conflito que não escolheram."
-            </blockquote>
-        </div>
-        
-        <div id="memoria" class="tab-content">
-            <h2>Memória, Verdade e Justiça</h2>
-            
-            <div class="image-placeholder">
-                [Imagem: Familiares de desaparecidos políticos]
-            </div>
-            
-            <h3>Os Desaparecimentos e a Luta por Verdade</h3>
-            <p>Estima-se que 69 guerrilheiros tenham sido mortos durante o conflito, a maioria executada após captura. Seus corpos foram ocultados pelo Estado, tornando-os desaparecidos políticos. Por décadas, familiares buscaram informações sobre o paradeiro de seus entes queridos.</p>
-            
-            <h3>A Comissão Nacional da Verdade</h3>
-            <p>Instalada em 2012, a CNV investigou as graves violações de direitos humanos ocorridas entre 1946 e 1988. Seu relatório, publicado em 2014, confirmou a responsabilidade do Estado brasileiro pelas execuções, torturas e ocultação de cadáveres na Guerrilha do Araguaia.</p>
-            
-            <h3>O Direito à Memória como Instrumento Pedagógico</h3>
-            <p>O ensino da Guerrilha do Araguaia possibilita refletir sobre: </p>
-            <ul>
-                <li>Os mecanismos de repressão em regimes autoritários</li>
-                <li>A luta por direitos humanos e democracia</li>
-                <li>O papel da memória na construção da identidade nacional</li>
-                <li>A importância da verdade e da justiça para a reconciliação social</li>
-            </ul>
-            
-            <h3>Jorge Pinheiro e a Pesquisa em Ensino de História</h3>
-            <p>A pesquisa de Jorge Kitchell Pinheiro Lima, desenvolvida no âmbito do Mestrado Profissional no Ensino de História (ProfHistoria), analisa as possibilidades didáticas do tema "Guerrilha do Araguaia" em sala de aula, propondo materiais e approaches pedagógicos que favoreçam o pensamento crítico dos estudantes.</p>
-        </div>
-        
-        <div id="referencias" class="tab-content">
-            <h2>Referências Bibliográficas</h2>
-            
-            <h3>Livros e Teses</h3>
-            <ul>
-                <li>GASPARI, Elio. A ditadura envergonhada. São Paulo: Intrínseca, 2014.</li>
-                <li>REIS, Daniel Aarão. Ditadura militar, esquerdas e sociedade. Rio de Janeiro: Zahar, 2000.</li>
-                <li>ROLIM, César. Guerrilha do Araguaia: a esquerda em armas. São Paulo: Editora UNESP, 2005.</li>
-                <li>PINHEIRO, Jorge Kitchell Lima. "Guerrilha do Araguaia no Ensino de História: materiais didáticos e approaches pedagógicos". Dissertação de Mestrado. ProfHistoria, 2024.</li>
-            </ul>
-            
-            <h3>Documentos Oficiais</h3>
-            <ul>
-                <li>COMISSÃO NACIONAL DA VERDADE. Relatório Final. Brasília: CNV, 2014.</li>
-                <li>PROJETO BRASIL: NUNCA MAIS. Arquivos da ditadura militar. Disponível em: https://bnmdigital.mpf.mp.br</li>
-            </ul>
-            
-            <h3>Artigos Acadêmicos</h3>
-            <ul>
-                <li>SAITO, H. T. "A Guerrilha do Araguaia: memória e história". Revista de História, v. 45, n. 2, 2010.</li>
-                <li>PEREIRA, A. M. "O ensino da Guerrilha do Araguaia: desafios e perspectivas". Revista de Ensino de História, v. 12, n. 3, 2018.</li>
-                <li>SILVA, Jenifer. "Cartografia histórica e memória: a Guerrilha do Araguaia em mapas digitais". Anais do Simpósio Nacional de Ensino de História, 2023.</li>
-            </ul>
-            
-            <h3>Fontes Online</h3>
-            <ul>
-                <li>Memórias da Ditadura - Instituto Vladimir Herzog. Disponível em: https://memoriasdaditadura.org.br</li>
-                <li>Centro de Referência das Lutas Políticas no Brasil (1964-1985). Disponível em: http://www.memoriasreveladas.gov.br</li>
-            </ul>
-            
-            <h3>Recursos Audiovisuais</h3>
-            <ul>
-                <li>Documentário "Campo de Batalha - Araguaia" (2018)</li>
-                <li>Série "Democracia em Vertigem" (2019)</li>
-                <li>Acervo digital do Jornal do Brasil sobre a Guerrilha do Araguaia</li>
-            </ul>
-            
-            <div class="content-section">
-                <h2>Créditos e Agradecimentos</h2>
-                <p><strong>Pesquisa original:</strong> Jorge Kitchell Pinheiro Lima | ProfHistoria</p>
-                <p><strong>Site, mapa e curadoria:</strong> Jenifer Silva | 2025</p>
-                <p><strong>Desenvolvimento web:</strong> Jenifer Silva</p>
-                <p><strong>Cartografia:</strong> QGIS e qgis2web</p>
-                <p><strong>Apoio:</strong> Mestrado Profissional no Ensino de História - ProfHistoria</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Seção de Logos -->
-    <div class="logo-section">
-        <div class="logo-container">
-            <h3 class="logo-title">Realização e Apoio</h3>
-            <div class="logos">
-                <div class="logo-placeholder">Logo ProfHistoria</div>
-                <div class="logo-placeholder">Logo Universidade</div>
-                <div class="logo-placeholder">Logo Financiadora</div>
-                <div class="logo-placeholder">Logo Parceiro</div>
+    <!-- Seção Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Map Design</h1>
+            <p>Map data visualization will be widely used in various industries and will play a powerful role in the future.</p>
+            <a href="#" class="cta-button">GET STARTED</a>
+        </div>
+    </section>
+
+    <!-- Seção de Recursos -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por que escolher o WebMapa?</h2>
+                <p>Nossa plataforma oferece as ferramentas mais avançadas para visualização de dados em mapas, atendendo às necessidades de diversos setores.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Visualização Intuitiva</h3>
+                    <p>Transforme dados complexos em representações visuais claras e compreensíveis em mapas interativos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Análise de Dados</h3>
+                    <p>Identifique padrões, tendências e insights valiosos através da sobreposição de múltiplas camadas de informação.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Integração Simples</h3>
+                    <p>Conecte-se facilmente com suas fontes de dados existentes através de nossa API robusta e documentação completa.</p>
+                </div>
             </div>
         </div>
-    </div>
-    
+    </section>
+
+    <!-- Seção de Demonstração -->
+    <section class="demo">
+        <div class="container">
+            <div class="demo-content">
+                <div class="demo-text">
+                    <h2>Experimente o poder dos mapas interativos</h2>
+                    <p>Nossa plataforma permite criar visualizações de dados geográficos impressionantes com apenas alguns cliques. Desde análises de mercado até monitoramento em tempo real, o WebMapa oferece soluções para suas necessidades específicas.</p>
+                    <p>Comece hoje mesmo a explorar o potencial dos dados espaciais para impulsionar sua tomada de decisão.</p>
+                    <a href="#" class="cta-button" style="margin-top: 20px;">Ver Demonstração</a>
+                </div>
+                <div class="demo-visual">
+                    [Área para visualização do mapa interativo]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
     <footer>
-        <p>Site desenvolvido por Jenifer Silva | 2025</p>
-        <p>Baseado na pesquisa de Jorge Kitchell Pinheiro Lima - ProfHistoria</p>
-        <p class="credits">Este trabalho é parte de um projeto educacional sem fins lucrativos</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>WebMapa</h3>
+                    <ul>
+                        <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Produtos</h3>
+                    <ul>
+                        <li><a href="#">WebMapa Pro</a></li>
+                        <li><a href="#">WebMapa Enterprise</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">Tutoriais</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Termos de uso</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 WebMapa. Todos os direitos reservados.
+            </div>
+        </div>
     </footer>
-
-    <!-- Incluindo Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    
-    <script>
-        // Função para alternar entre abas
-        function openTab(tabName) {
-            // Esconder todos os conteúdos de abas
-            var tabContents = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
-            }
-            
-            // Desativar todos os botões de aba
-            var tabs = document.getElementsByClassName('tab');
-            for (var i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            
-            // Ativar a aba selecionada
-            document.getElementById(tabName).classList.add('active');
-            
-            // Ativar o botão correspondente
-            event.currentTarget.classList.add('active');
-            
-            // Redimensionar o mapa quando a aba for aberta
-            if (tabName === 'mapa') {
-                setTimeout(function() {
-                    map.invalidateSize();
-                }, 100);
-            }
-        }
-        
-        // Inicializar o mapa (substitua com as coordenadas e camadas do seu mapa exportado)
-        var map = L.map('map').setView([-5.5, -49.5], 7);
-        
-        // Adicionar camada base (substitua com a camada do seu mapa exportado)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        // Adicionar alguns marcadores de exemplo (substitua com os dados do seu mapa)
-        L.marker([-5.55, -49.5]).addTo(map)
-            .bindPopup('<strong>Área de atuação da Guerrilha</strong><br>Região de implantação do PCdoB')
-            .openPopup();
-        
-        L.marker([-5.6, -49.4]).addTo(map)
-            .bindPopup('<strong>Local de confronto</strong><br>Primeiro embate em abril de 1972');
-        
-        L.marker([-5.52, -49.45]).addTo(map)
-            .bindPopup('<strong>Acampamento guerrilheiro</strong><br>Base de apoio logístico');
-            
-        // Adicionar uma área de polígono de exemplo
-        var polygon = L.polygon([
-            [-5.45, -49.6],
-            [-5.5, -49.3],
-            [-5.65, -49.4]
-        ], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.2
-        }).addTo(map).bindPopup('Região principal da Guerrilha do Araguaia');
-    </script>
 </body>
 </html>
