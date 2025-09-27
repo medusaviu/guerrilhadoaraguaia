@@ -3,180 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerrilha do Araguaia - Ensino de História</title>
+    <title>Guerrilha do Araguaia - Memória Viva</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        :root {
-            --azul-escuro: #1e3a5f;
-            --azul-medio: #2c5282;
-            --azul-claro: #4a7bb8;
-            --verde: #2e7d32;
-            --cinza-escuro: #37474f;
-            --cinza-claro: #f5f5f5;
-            --branco: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            background-color: #f0f8ff;
             color: #333;
-            background-color: var(--cinza-claro);
+            line-height: 1.6;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--azul-escuro), var(--azul-medio));
-            color: var(--branco);
+        header {
+            background: linear-gradient(135deg, #1a5f23, #2e8b57);
+            color: white;
             padding: 2rem 0;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .header h1 {
+        h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
         }
 
-        .header .subtitle {
+        .subtitle {
             font-size: 1.2rem;
-            opacity: 0.9;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .nav {
-            background-color: var(--azul-escuro);
+        nav {
+            background-color: #2e8b57;
             padding: 1rem 0;
         }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        nav ul {
             display: flex;
             justify-content: center;
+            list-style: none;
             flex-wrap: wrap;
         }
 
-        .nav a {
-            color: var(--branco);
+        nav li {
+            margin: 0 1rem;
+        }
+
+        nav a {
+            color: white;
             text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            margin: 0 0.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             transition: background-color 0.3s;
         }
 
-        .nav a:hover {
-            background-color: var(--azul-claro);
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .section {
-            background-color: var(--branco);
-            margin: 2rem 0;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .section h2 {
-            color: var(--azul-escuro);
-            margin-bottom: 1.5rem;
-            border-bottom: 3px solid var(--verde);
-            padding-bottom: 0.5rem;
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .intro p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .map-section {
+            margin: 2rem 0;
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
         #map {
             height: 500px;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .legenda {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .legenda-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .legenda-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 100%;
-            margin: 2rem 0;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            background-color: var(--azul-claro);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -3px;
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            background-color: var(--branco);
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: var(--branco);
-            border: 4px solid var(--verde);
-            top: 15px;
-            border-radius: 50%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             z-index: 1;
         }
 
-        .left {
-            left: 0;
+        .fullscreen-btn {
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .right {
-            left: 50%;
+        .fullscreen-btn:hover {
+            background-color: #1a5f23;
         }
 
-        .left::after {
-            right: -10px;
-        }
-
-        .right::after {
-            left: -10px;
-        }
-
-        .content {
-            padding: 20px;
-            background-color: var(--cinza-claro);
-            border-radius: 6px;
-        }
-
-        .grid {
+        .content-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
@@ -184,10 +127,10 @@
         }
 
         .card {
-            background: var(--branco);
-            border-radius: 8px;
+            background-color: white;
+            border-radius: 10px;
             padding: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
         }
 
@@ -196,282 +139,214 @@
         }
 
         .card h3 {
-            color: var(--azul-escuro);
+            color: #2e8b57;
             margin-bottom: 1rem;
+            border-bottom: 2px solid #f0f8ff;
+            padding-bottom: 0.5rem;
         }
 
-        .footer {
-            background-color: var(--azul-escuro);
-            color: var(--branco);
+        .testimonials {
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .testimonial {
+            background-color: white;
+            border-left: 4px solid #2e8b57;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a5f23, #2e8b57);
+            color: white;
             text-align: center;
             padding: 2rem 0;
             margin-top: 2rem;
         }
 
-        @media screen and (max-width: 768px) {
-            .timeline::after {
-                left: 31px;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
             }
+            
+            #map {
+                height: 300px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+        }
 
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-
-            .right {
-                left: 0%;
-            }
-
-            .left::after, .right::after {
-                left: 15px;
-            }
+        /* Estilo para o mapa em tela cheia */
+        .fullscreen #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+        
+        .fullscreen .exit-fullscreen {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1>Guerrilha do Araguaia</h1>
-            <div class="subtitle">Transparência e Excelência no Ensino de História</div>
-        </div>
+    <header>
+        <h1>Guerrilha do Araguaia</h1>
+        <p class="subtitle">Memória Viva dos Moradores de São Geraldo do Araguaia</p>
     </header>
 
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="#institucional">Institucional</a>
-            <a href="#mapa-interativo">Mapa Interativo</a>
-            <a href="#linha-tempo">Linha do Tempo</a>
-            <a href="#conteudo">Conteúdo Histórico</a>
-            <a href="#recursos">Recursos Educativos</a>
-            <a href="#transparencia">Transparência</a>
-        </div>
+    <nav>
+        <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#mapa">Mapa Interativo</a></li>
+            <li><a href="#historia">História</a></li>
+            <li><a href="#depoimentos">Depoimentos</a></li>
+            <li><a href="#memoria">Memória Social</a></li>
+        </ul>
     </nav>
 
-    <main class="container">
-        <section id="institucional" class="section">
-            <h2>Institucional</h2>
-            <p>Este projeto educativo é norteado pelos princípios da <strong>legalidade, transparência, eficiência e excelência</strong> no ensino de história. Nosso compromisso é com a preservação da memória e o acesso à informação histórica qualificada.</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <h3>Missão</h3>
-                    <p>Preservar e divulgar a história da Guerrilha do Araguaia através de recursos educativos inovadores e acessíveis.</p>
-                </div>
-                <div class="card">
-                    <h3>Metodologia</h3>
-                    <p>Utilizamos ferramentas de gestão do conhecimento e tecnologia para garantir a qualidade e confiabilidade das informações.</p>
-                </div>
-                <div class="card">
-                    <h3>Compromisso</h3>
-                    <p>Todas as informações são baseadas em documentos oficiais, relatórios da CNV e pesquisas acadêmicas reconhecidas.</p>
-                </div>
-            </div>
+    <div class="container">
+        <section id="sobre" class="intro">
+            <h2>Sobre a Guerrilha do Araguaia</h2>
+            <p>Este site apresenta os resultados da pesquisa sobre a Guerrilha do Araguaia (1972-1975) a partir da memória dos moradores de São Geraldo do Araguaia, Pará. O trabalho utiliza a metodologia da História Oral para recuperar as experiências e percepções da população local sobre este importante episódio da história brasileira durante o regime militar.</p>
+            <p>A pesquisa revela como os moradores vivenciaram a chegada dos militantes do PCdoB, a implantação da guerrilha, a repressão militar e as consequências do conflito para a comunidade.</p>
         </section>
 
-        <section id="mapa-interativo" class="section">
-            <h2>Mapa Interativo da Guerrilha do Araguaia</h2>
+        <section id="mapa" class="map-section">
+            <div class="map-header">
+                <h2>Mapa da Região do Conflito</h2>
+                <button class="fullscreen-btn" id="fullscreen-btn">Tela Cheia</button>
+            </div>
             <div id="map"></div>
-            <div class="legenda">
-                <div class="legenda-item">
-                    <div class="legenda-color" style="background-color: #e74c3c;"></div>
-                    <span>Operações Militares</span>
+        </section>
+
+        <section id="historia">
+            <h2>Contexto Histórico</h2>
+            <div class="content-section">
+                <div class="card">
+                    <h3>São Geraldo do Araguaia</h3>
+                    <p>Município localizado no sudeste do Pará, surgiu a partir da exploração de castanha, garimpos de cristal e extração de madeira. Era uma região isolada e com pouca presença do Estado antes do conflito.</p>
                 </div>
-                <div class="legenda-item">
-                    <div class="legenda-color" style="background-color: #27ae60;"></div>
-                    <span>Bases Guerrilheiras</span>
+                <div class="card">
+                    <h3>Chegada dos Militantes</h3>
+                    <p>Entre 1966 e 1967, militantes do PCdoB começaram a chegar à região disfarçados de lavradores, comerciantes e fazendeiros, com o objetivo de estabelecer uma guerrilha rural inspirada no modelo chinês.</p>
                 </div>
-                <div class="legenda-item">
-                    <div class="legenda-color" style="background-color: #3498db;"></div>
-                    <span>Centros de Tortura</span>
-                </div>
-                <div class="legenda-item">
-                    <div class="legenda-color" style="background-color: #f39c12;"></div>
-                    <span>Comunidades Atingidas</span>
+                <div class="card">
+                    <h3>O Conflito</h3>
+                    <p>Em 1972, o Exército descobriu o movimento e iniciou operações militares que duraram até 1975, resultando na dizimação quase total dos guerrilheiros. A população local foi profundamente afetada pela violência e controle militar.</p>
                 </div>
             </div>
         </section>
 
-        <section id="linha-tempo" class="section">
-            <h2>Linha do Tempo Histórica</h2>
-            <div class="timeline">
-                <div class="timeline-item left">
-                    <div class="content">
-                        <h3>1966</h3>
-                        <p>Chegam os primeiros militantes do PCdoB à região do Araguaia</p>
-                    </div>
-                </div>
-                <div class="timeline-item right">
-                    <div class="content">
-                        <h3>1970</h3>
-                        <p>Operação Carajás e construção do Batalhão de Infantaria de Selva em Marabá</p>
-                    </div>
-                </div>
-                <div class="timeline-item left">
-                    <div class="content">
-                        <h3>1972</h3>
-                        <p>Início dos confrontos diretos. Operação Papagaio com 5.000 homens</p>
-                    </div>
-                </div>
-                <div class="timeline-item right">
-                    <div class="content">
-                        <h3>1973</h3>
-                        <p>Operações Sucuri e Marajoara. Intensificação da repressão</p>
-                    </div>
-                </div>
-                <div class="timeline-item left">
-                    <div class="content">
-                        <h3>1974</h3>
-                        <p>Aniquilação total da guerrilha. 56 guerrilheiros mortos</p>
-                    </div>
-                </div>
+        <section id="depoimentos" class="testimonials">
+            <h2>Depoimentos dos Moradores</h2>
+            <div class="testimonial">
+                <p>"Eu morei vizinho do Paulo com a Dina. Moramos foi vizinho bem assim. O Paulo, se você visse o Paulo, o jeito dele com a gente, tratar a gente..."</p>
+                <p><strong>— Seu Virino Silva</strong></p>
+            </div>
+            <div class="testimonial">
+                <p>"Eles era gente boa, o negócio deles era bem feito com todo mundo. Eles moraram muito tempo aqui, Dina, Paulo, Antônio, o Osvaldão também morava perto, na serra."</p>
+                <p><strong>— Seu Dico Barroso</strong></p>
+            </div>
+            <div class="testimonial">
+                <p>"Conheci a comadre Dina pessoalmente. Ela era colega de profissão, era uma mulher muito bonita, de pele branca e boa altura. Era muito boa pessoa."</p>
+                <p><strong>— Dona Joana</strong></p>
             </div>
         </section>
 
-        <section id="conteudo" class="section">
-            <h2>Conteúdo Histórico</h2>
-            <div class="grid">
+        <section id="memoria">
+            <h2>Memória Social e Impactos</h2>
+            <div class="content-section">
                 <div class="card">
-                    <h3>Contexto Político</h3>
-                    <p>O PCdoB e a opção pela luta armada contra o regime militar brasileiro.</p>
+                    <h3>Medo e Silêncio</h3>
+                    <p>Muitos moradores relutavam em falar sobre o conflito mesmo décadas depois, demonstrando o trauma causado pela violência e repressão.</p>
                 </div>
                 <div class="card">
-                    <h3>Estratégia Militar</h3>
-                    <p>A doutrina da Guerra Revolucionária aplicada pelas Forças Armadas.</p>
+                    <h3>Relações com os Guerrilheiros</h3>
+                    <p>Os militantes construíram relações de amizade e confiança com a população local, oferecendo ajuda médica, trabalhando nas roças e participando da vida comunitária.</p>
                 </div>
                 <div class="card">
-                    <h3>Vítimas e Desaparecidos</h3>
-                    <p>Lista completa dos 62 desaparecidos políticos reconhecidos pela Corte IDH.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="recursos" class="section">
-            <h2>Recursos para Educadores</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Planos de Aula</h3>
-                    <p>Material didático para ensino fundamental e médio.</p>
-                </div>
-                <div class="card">
-                    <h3>Documentos Históricos</h3>
-                    <p>Relatórios da CNV, documentos militares e cartas dos guerrilheiros.</p>
-                </div>
-                <div class="card">
-                    <h3>Vídeos Educativos</h3>
-                    <p>Documentários e depoimentos para uso em sala de aula.</p>
+                    <h3>Presença do Exército</h3>
+                    <p>A chegada das tropas transformou a vida na região, com controle rigoroso sobre a população, toque de recolher e restrições às liberdades individuais.</p>
                 </div>
             </div>
         </section>
+    </div>
 
-        <section id="transparencia" class="section">
-            <h2>Transparência</h2>
-            <p>Todo o conteúdo deste site é baseado em fontes documentais verificáveis:</p>
-            <ul>
-                <li>Arquivo Nacional - Fundo SNI e Taís Morais</li>
-                <li>Relatório Final da Comissão Nacional da Verdade</li>
-                <li>Acervo da Comissão Especial sobre Mortos e Desaparecidos Políticos</li>
-                <li>Documentos do Centro de Informações do Exército (CIE)</li>
-            </ul>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Projeto Educativo Guerrilha do Araguaia. Todos os direitos reservados.</p>
-            <p>Desenvolvido para fins educacionais e de preservação da memória histórica.</p>
-        </div>
+    <footer>
+        <p>Site baseado no TCC "A Guerrilha do Araguaia na Memória dos Moradores de São Geraldo do Araguaia" de Guilherme Acássio da Silva</p>
+        <p>© 2023 - Memória Viva da Guerrilha do Araguaia</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Inicialização do mapa
-        var map = L.map('map').setView([-5.5, -49.5], 7);
+        // Inicializar o mapa
+        const map = L.map('map').setView([-6.4, -48.6], 8);
 
-        // Adicionando tile layer (mapa base)
+        // Adicionar camada do mapa
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Marcadores exemplos (coordenadas aproximadas)
-        var marcadores = [
-            {
-                lat: -5.35,
-                lng: -49.12,
-                titulo: "Marabá - Base Militar",
-                tipo: "militar",
-                descricao: "Sede do Batalhão de Infantaria de Selva e centro de operações",
-                video: "https://youtube.com/embed/exemplo1"
-            },
-            {
-                lat: -5.8,
-                lng: -49.3,
-                titulo: "Serra das Andorinhas",
-                tipo: "guerrilha",
-                descricao: "Área de atuação do Destacamento B dos guerrilheiros",
-                video: "https://youtube.com/embed/exemplo2"
-            },
-            {
-                lat: -5.6,
-                lng: -49.1,
-                titulo: "Casa Azul - Centro de Tortura",
-                tipo: "tortura",
-                descricao: "Principal centro clandestino de detenção e tortura",
-                video: "https://youtube.com/embed/exemplo3"
-            },
-            {
-                lat: -5.9,
-                lng: -49.5,
-                titulo: "Aldeia Aikewara",
-                tipo: "comunidade",
-                descricao: "Comunidade indígena violentamente atingida pelas operações",
-                video: "https://youtube.com/embed/exemplo4"
-            }
-        ];
+        // Adicionar marcadores para locais importantes
+        const saoGeraldo = L.marker([-6.4167, -48.5667]).addTo(map);
+        saoGeraldo.bindPopup("<b>São Geraldo do Araguaia</b><br>Localização central do conflito");
 
-        // Cores para os tipos de marcador
-        var cores = {
-            "militar": "#e74c3c",
-            "guerrilha": "#27ae60", 
-            "tortura": "#3498db",
-            "comunidade": "#f39c12"
-        };
+        const xambioa = L.marker([-6.4167, -48.5333]).addTo(map);
+        xambioa.bindPopup("<b>Xambioá</b><br>Importante centro regional na época");
 
-        // Adicionando marcadores ao mapa
-        marcadores.forEach(function(local) {
-            var marcador = L.circleMarker([local.lat, local.lng], {
-                color: cores[local.tipo],
-                fillColor: cores[local.tipo],
-                fillOpacity: 0.7,
-                radius: 8
-            }).addTo(map);
+        const maraba = L.marker([-5.35, -49.1167]).addTo(map);
+        maraba.bindPopup("<b>Marabá</b><br>Principal cidade da região");
 
-            marcador.bindPopup(`
-                <div style="min-width: 250px;">
-                    <h3>${local.titulo}</h3>
-                    <p>${local.descricao}</p>
-                    <div style="margin: 10px 0;">
-                        <span style="background-color: ${cores[local.tipo]}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px;">
-                            ${local.tipo.toUpperCase()}
-                        </span>
-                    </div>
-                    <div style="margin-top: 10px;">
-                        <a href="${local.video}" target="_blank" style="background: #e74c3c; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; display: inline-block;">
-                            Assistir Vídeo
-                        </a>
-                    </div>
-                </div>
-            `);
-        });
+        // Adicionar uma área aproximada do conflito
+        const conflictArea = L.polygon([
+            [-6.3, -48.4],
+            [-6.3, -48.8],
+            [-6.5, -48.8],
+            [-6.5, -48.4]
+        ], {color: 'red', fillOpacity: 0.1}).addTo(map);
+        conflictArea.bindPopup("Área aproximada do conflito da Guerrilha do Araguaia");
 
-        // Navegação suave
-        document.querySelectorAll('.nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+        // Função para tela cheia
+        document.getElementById('fullscreen-btn').addEventListener('click', function() {
+            document.body.classList.add('fullscreen');
+            
+            // Criar botão para sair da tela cheia
+            const exitBtn = document.createElement('button');
+            exitBtn.className = 'exit-fullscreen';
+            exitBtn.textContent = 'Sair da Tela Cheia';
+            exitBtn.addEventListener('click', function() {
+                document.body.classList.remove('fullscreen');
+                document.body.removeChild(exitBtn);
             });
+            document.body.appendChild(exitBtn);
+            
+            // Ajustar o mapa para a nova dimensão
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
         });
     </script>
 </body>
